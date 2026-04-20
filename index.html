@@ -552,9 +552,24 @@ let eCid=null,eTid=null,vCid=null,vTid=null;
 let cPhoto=null,cPhoto2=null,tPhoto=null,tPhoto2=null,selCol=null,selSeas=[],selMov=null;
 let savedOutfits=JSON.parse(localStorage.getItem('time2fit_saved_outfits')||'[]');
 
-const saveW=()=>localStorage.setItem('cap_w',JSON.stringify(wardrobe));
-const saveT=()=>localStorage.setItem('cap_t',JSON.stringify(watches));
-const saveOutfits=()=>localStorage.setItem('time2fit_saved_outfits',JSON.stringify(savedOutfits));
+// localStorage dolu olabilir (sıkıştırılmış fotoğraflara rağmen). Sessiz çökmek yerine uyarı gösterir.
+function safeStore(key, value){
+  try{
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch(err){
+    console.error('localStorage yazma hatası:', err);
+    if(err && (err.name==='QuotaExceededError' || err.code===22 || err.code===1014)){
+      showToast('Depolama alanı dolu! Eski kayıtları silin.','err');
+    } else {
+      showToast('Kayıt başarısız: '+(err.message||'bilinmeyen hata'),'err');
+    }
+    return false;
+  }
+}
+const saveW=()=>safeStore('cap_w',wardrobe);
+const saveT=()=>safeStore('cap_t',watches);
+const saveOutfits=()=>safeStore('time2fit_saved_outfits',savedOutfits);
 const fmtMoney=v=>'₺'+Number(v||0).toLocaleString('tr-TR');
 function currentSeason(){const m=new Date().getMonth()+1; if([12,1,2].includes(m)) return 'Kış'; if([3,4,5].includes(m)) return 'İlkbahar'; if([6,7,8].includes(m)) return 'Yaz'; return 'Sonbahar';}
 function scoreClothing(item, occ, season){let s=0; const sub=(item.sub||'').toLowerCase(); const name=(item.name||'').toLowerCase(); const wears=item.wears||0; s+=Math.max(0,16-wears*2); if((item.seasons||[]).includes(season)) s+=10; if(!(item.seasons||[]).length) s+=2; if(occ==='İş' && ['gömlek','blazer','oxford','polo','pantolon','loafer','oxford'].some(k=>sub.includes(k)||name.includes(k))) s+=9; if(occ==='Casual' && ['t-shirt','jean','sneaker','sweatshirt','şort'].some(k=>sub.includes(k)||name.includes(k))) s+=9; if(occ==='Özel Gün' && ['ceket','blazer','gömlek','oxford','loafer','takı'].some(k=>sub.includes(k)||name.includes(k))) s+=9; if(occ==='Spor' && ['tayt','şort','sneaker','t-shirt'].some(k=>sub.includes(k)||name.includes(k))) s+=9; if(occ==='Gece' && ['siyah','bordo','ceket','bot'].some(k=>sub.includes(k)||name.includes(k)||String(item.color||'').toLowerCase().includes(k))) s+=7; return s; }
@@ -747,11 +762,53 @@ function renderDetailThumbs(arr){
     </div>
     <div class="detail-slider-hint">Kaydırarak diğer fotoğrafı gör</div>`;
 }
-function handlePic(input,t,n=1){
-  const f=input.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=e=>{
-    const d=e.target.result;
+// Fotoğrafı canvas ile sıkıştırır: max 1200px, JPEG 0.82 kalite.
+// Bu sayede localStorage kotasını patlatmıyoruz ve uygulama hızlı kalıyor.
+function compressImage(file, maxDim=1200, quality=0.82){
+  return new Promise((resolve,reject)=>{
+    if(!file){ reject(new Error('Dosya yok')); return; }
+    if(!file.type || !file.type.startsWith('image/')){ reject(new Error('Geçersiz dosya tipi')); return; }
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('Dosya okunamadı'));
+    reader.onload=e=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('Görsel yüklenemedi'));
+      img.onload=()=>{
+        let {width,height}=img;
+        if(width>height && width>maxDim){ height=Math.round(height*maxDim/width); width=maxDim; }
+        else if(height>=width && height>maxDim){ width=Math.round(width*maxDim/height); height=maxDim; }
+        const canvas=document.createElement('canvas');
+        canvas.width=width; canvas.height=height;
+        const ctx=canvas.getContext('2d');
+        ctx.fillStyle='#0f1318'; ctx.fillRect(0,0,width,height); // PNG şeffaflığını temizle
+        ctx.drawImage(img,0,0,width,height);
+        try{
+          const dataUrl=canvas.toDataURL('image/jpeg',quality);
+          if(!dataUrl || dataUrl==='data:,') reject(new Error('Sıkıştırma başarısız'));
+          else resolve(dataUrl);
+        } catch(err){ reject(err); }
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handlePic(input,t,n=1){
+  const f=input.files && input.files[0];
+  // Input'u hemen resetle ki aynı dosya ikinci kez seçilebilsin
+  input.value='';
+  if(!f) return;
+  // ~15 MB üstü dosyaları reddet (telefonun HEIC'i veya RAW olabilir)
+  if(f.size > 15*1024*1024){ showToast('Fotoğraf çok büyük (max 15 MB)','err'); return; }
+
+  const dropId = t==='c' ? (n===1?'cPhotoDrop':'cPhotoDrop2') : (n===1?'tPhotoDrop':'tPhotoDrop2');
+  const dropEl = document.getElementById(dropId);
+  // Yükleme sırasında görsel geri bildirim
+  if(dropEl) dropEl.innerHTML = `<div class="pd-badge">Foto ${n}</div><div class="pd-txt">⏳ İşleniyor...</div>`;
+
+  try{
+    const d = await compressImage(f);
     if(t==='c'){
       if(n===1){ cPhoto=d; document.getElementById('cPhotoDrop').innerHTML=clothingDropMarkup('Foto 1', d); }
       else { cPhoto2=d; document.getElementById('cPhotoDrop2').innerHTML=clothingDropMarkup('Foto 2', d); }
@@ -759,8 +816,13 @@ function handlePic(input,t,n=1){
       if(n===1){ tPhoto=d; document.getElementById('tPhotoDrop').innerHTML=watchDropMarkup('Foto 1', d); }
       else { tPhoto2=d; document.getElementById('tPhotoDrop2').innerHTML=watchDropMarkup('Foto 2', d); }
     }
-  };
-  r.readAsDataURL(f);
+  } catch(err){
+    console.error('Fotoğraf işleme hatası:', err);
+    showToast('Fotoğraf yüklenemedi: '+(err.message||'bilinmeyen hata'),'err');
+    // Drop alanını eski haline döndür
+    const markup = t==='c' ? clothingDropMarkup(`Foto ${n}`, null) : watchDropMarkup(`Foto ${n}`, null);
+    if(dropEl) dropEl.innerHTML = markup;
+  }
 }
 function saveClothing(){
   const name=document.getElementById('cName').value.trim();
