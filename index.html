@@ -573,6 +573,124 @@ html, body {
   color: white; font-size: 13px; font-weight: 500; font-family: var(--font-body);
   border: none; cursor: pointer;
 }
+
+/* ── KOMBIN VIEW ── */
+.combo-wrap { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 14px; }
+
+.combo-outfit-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.combo-outfit-header {
+  padding: 14px 16px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.combo-outfit-label { font-family: var(--font-display); font-size: 18px; font-weight: 400; }
+.combo-outfit-score {
+  font-size: 12px; font-weight: 500; padding: 4px 10px;
+  border-radius: 12px; background: var(--mint-100); color: var(--mint-600);
+}
+.combo-items { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.combo-item {
+  display: flex; align-items: center; gap: 12px;
+}
+.combo-item-img {
+  width: 52px; height: 52px; border-radius: var(--radius-sm);
+  background: var(--surface-2); overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  border: 1px solid var(--border);
+}
+.combo-item-img img { width: 100%; height: 100%; object-fit: cover; }
+.combo-item-info { flex: 1; }
+.combo-item-name { font-size: 14px; font-weight: 500; }
+.combo-item-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.combo-item-role {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--mint-500);
+}
+.combo-color-row {
+  padding: 10px 16px 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-top: 1px solid var(--border);
+}
+.combo-color-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); }
+.combo-harmony-label { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
+
+.combo-empty {
+  padding: 60px 24px; text-align: center;
+  background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border);
+}
+.combo-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.combo-empty-title { font-family: var(--font-display); font-size: 20px; color: var(--text-secondary); margin-bottom: 6px; }
+.combo-empty-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+.combo-filter-wrap { display: flex; gap: 8px; padding: 0 16px 4px; overflow-x: auto; scrollbar-width: none; }
+.combo-filter-wrap::-webkit-scrollbar { display: none; }
+.combo-filter-btn {
+  flex-shrink: 0; padding: 6px 14px; border-radius: 16px;
+  border: 1.5px solid var(--border); background: transparent;
+  color: var(--text-muted); font-family: var(--font-body); font-size: 12px; cursor: pointer;
+}
+.combo-filter-btn.active { background: var(--mint-100); border-color: var(--mint-300); color: var(--mint-600); }
+
+/* ── SETTINGS VIEW ── */
+.settings-wrap { padding: 0 16px 32px; display: flex; flex-direction: column; gap: 8px; }
+.settings-section-title {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 16px 4px 6px;
+}
+.settings-card {
+  background: var(--surface); border-radius: var(--radius-md);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.settings-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; cursor: pointer; transition: background 0.15s;
+}
+.settings-row:active { background: var(--surface-2); }
+.settings-row-icon { font-size: 22px; flex-shrink: 0; }
+.settings-row-info { flex: 1; }
+.settings-row-title { font-size: 15px; font-weight: 500; }
+.settings-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.settings-row-arrow { font-size: 20px; color: var(--text-muted); }
+.settings-divider { height: 1px; background: var(--border); margin: 0 16px; }
+
+/* Summary card in settings */
+.summary-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0; padding: 16px 0 8px;
+}
+.summary-item { text-align: center; padding: 8px; }
+.summary-item + .summary-item { border-left: 1px solid var(--border); }
+.summary-val { font-family: var(--font-display); font-size: 26px; font-weight: 300; color: var(--mint-500); }
+.summary-lbl { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
+.summary-cats { padding: 0 16px 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+.summary-cat-chip {
+  padding: 4px 12px; border-radius: 12px;
+  background: var(--mint-100); color: var(--mint-600);
+  font-size: 12px; font-weight: 500;
+}
+
+/* Season guide */
+.season-guide-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.season-guide-header {
+  padding: 16px 20px; background: linear-gradient(135deg, var(--mint-100), var(--clay-100));
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.season-guide-emoji { font-size: 28px; }
+.season-guide-title { font-family: var(--font-display); font-size: 18px; font-weight: 400; }
+.season-guide-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.season-guide-body { padding: 4px 0; }
+.guide-item { padding: 12px 20px; border-bottom: 1px solid var(--border); }
+.guide-item:last-child { border-bottom: none; }
+.guide-item-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.guide-item-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -680,14 +798,112 @@ html, body {
       </div>
     </div>
 
+    <!-- KOMBİN VIEW -->
+    <div class="view" id="viewCombo">
+      <div class="section-header">
+        <span class="section-title">Kombin</span>
+        <button class="btn-refresh" id="refreshCombo" style="width:auto;padding:6px 14px;font-size:12px;">🎲 Yenile</button>
+      </div>
+      <div class="combo-wrap" id="comboWrap">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- AYARLAR VIEW -->
+    <div class="view" id="viewSettings">
+      <div class="section-header"><span class="section-title">Ayarlar</span></div>
+      <div class="settings-wrap">
+
+        <!-- Dolap Özeti -->
+        <div class="settings-card" id="wardrobeSummary"></div>
+
+        <!-- Yedek / Geri Yükle -->
+        <div class="settings-section-title">Veri Yönetimi</div>
+        <div class="settings-card">
+          <div class="settings-row" id="exportBtn">
+            <div class="settings-row-icon">📤</div>
+            <div class="settings-row-info">
+              <div class="settings-row-title">Veriyi Dışa Aktar</div>
+              <div class="settings-row-sub">Tüm kıyafetleri JSON olarak indir</div>
+            </div>
+            <div class="settings-row-arrow">›</div>
+          </div>
+          <div class="settings-divider"></div>
+          <div class="settings-row" id="importBtnRow">
+            <div class="settings-row-icon">📥</div>
+            <div class="settings-row-info">
+              <div class="settings-row-title">Veriyi İçe Aktar</div>
+              <div class="settings-row-sub">JSON dosyasından geri yükle</div>
+            </div>
+            <div class="settings-row-arrow">›</div>
+            <input type="file" id="importInput" accept=".json" style="display:none">
+          </div>
+        </div>
+
+        <!-- Mevsimsel Stil Rehberi -->
+        <div class="settings-section-title">Mayıs / Yaz Stil Rehberi</div>
+        <div class="season-guide-card">
+          <div class="season-guide-header">
+            <span class="season-guide-emoji">🌿</span>
+            <div>
+              <div class="season-guide-title">Smart Casual Erkek · İlkbahar/Yaz</div>
+              <div class="season-guide-sub">Zamansız kombinler & temel parçalar</div>
+            </div>
+          </div>
+          <div class="season-guide-body">
+            <div class="guide-item">
+              <div class="guide-item-title">🌅 Temel Renk Paleti</div>
+              <div class="guide-item-text">Beyaz · Krem · Bej · Haki · Navy — bu 5 renk birbirine tamamen çalışır. Yazın açık tonlar ön planda.</div>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item-title">👕 Olmazsa Olmaz Üst Giyim</div>
+              <div class="guide-item-text">Beyaz keten gömlek, bej polo, navy t-shirt. Keten kumaş hem şık hem serin — mayıs–eylül arası temel.</div>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item-title">👖 Alt Giyim</div>
+              <div class="guide-item-text">Haki chino + bej chino ikilisi tüm kombinleri taşır. Navy slim pantolon ofis günleri için şart. Şort: sadece tam casual.</div>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item-title">👟 Ayakkabı</div>
+              <div class="guide-item-text">Beyaz sneaker (en çok yönlü), kahve/tan loafer (smart casual), beyaz canvas. Bu üçü yazın %90'ını karşılar.</div>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item-title">🧥 Dış Giyim</div>
+              <div class="guide-item-text">Navy veya gri blazer — tek parça tüm görünümü smart'a taşır. Serin akşamlar için ince bir trençkot yeterli.</div>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item-title">💡 Altın Kural</div>
+              <div class="guide-item-text">Yazın: açık üst + koyu alt veya koyu üst + açık alt. Tüm tonlar aynı olursa görünüm kaybolur.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tehlike Bölgesi -->
+        <div class="settings-section-title">Tehlike Bölgesi</div>
+        <div class="settings-card">
+          <div class="settings-row danger-row" id="clearAllBtn">
+            <div class="settings-row-icon">🗑️</div>
+            <div class="settings-row-info">
+              <div class="settings-row-title" style="color:#e53935">Tüm Verileri Sil</div>
+              <div class="settings-row-sub">Tüm kıyafetler kalıcı olarak silinir</div>
+            </div>
+            <div class="settings-row-arrow" style="color:#e53935">›</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </main>
 
   <button class="fab" id="fabBtn">＋</button>
 
   <nav class="bottom-nav">
     <button class="nav-item active" data-view="viewWardrobe"><span class="nav-icon">👔</span><span class="nav-label">Dolap</span></button>
+    <button class="nav-item" data-view="viewCombo"><span class="nav-icon">🎲</span><span class="nav-label">Kombin</span></button>
     <button class="nav-item" data-view="viewAnalysis"><span class="nav-icon">📊</span><span class="nav-label">Analiz</span></button>
     <button class="nav-item" data-view="viewStyle"><span class="nav-icon">✨</span><span class="nav-label">Stil</span></button>
+    <button class="nav-item" data-view="viewSettings"><span class="nav-icon">⚙️</span><span class="nav-label">Ayarlar</span></button>
   </nav>
 </div>
 
@@ -940,7 +1156,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(btn.dataset.view).classList.add('active');
-    const t = {viewWardrobe:['Time2Fit','Kıyafet Koleksiyonu'],viewAnalysis:['Time2Fit','Capsule & Skorlar'],viewStyle:['Time2Fit','Renk & Öneriler']}[btn.dataset.view];
+    const t = NAV_TITLES[btn.dataset.view] || ['Time2Fit', ''];
     document.getElementById('headerTitle').textContent = t[0];
     document.getElementById('headerSub').textContent = t[1];
     document.getElementById('fabBtn').style.display = btn.dataset.view === 'viewWardrobe' ? 'flex' : 'none';
@@ -1717,6 +1933,261 @@ function analyzeBuy(cat, sub, color) {
 document.querySelectorAll('.nav-item').forEach(btn => {
   if (btn.dataset.view === 'viewStyle') {
     btn.addEventListener('click', () => setTimeout(renderStyleView, 50));
+  }
+  if (btn.dataset.view === 'viewCombo') {
+    btn.addEventListener('click', () => setTimeout(renderComboView, 50));
+  }
+  if (btn.dataset.view === 'viewSettings') {
+    btn.addEventListener('click', () => setTimeout(renderSettings, 50));
+  }
+});
+
+// ── NAV TITLES ────────────────────────────────────────
+const NAV_TITLES = {
+  viewWardrobe: ['Time2Fit', 'Kıyafet Koleksiyonu'],
+  viewCombo:    ['Time2Fit', 'Kombin Önerileri'],
+  viewAnalysis: ['Time2Fit', 'Capsule & Skorlar'],
+  viewStyle:    ['Time2Fit', 'Renk & Öneriler'],
+  viewSettings: ['Time2Fit', 'Ayarlar'],
+};
+
+// ── KOMBIN ENGINE ─────────────────────────────────────
+let comboFilter = 'all'; // all | casual | smart | formal
+
+function generateCombos(wardrobe, count = 6) {
+  const tops    = wardrobe.filter(c => c.category === 'üst');
+  const bottoms = wardrobe.filter(c => c.category === 'alt');
+  const shoes   = wardrobe.filter(c => c.category === 'ayakkabı');
+  const outers  = wardrobe.filter(c => c.category === 'dış');
+
+  if (!tops.length || !bottoms.length || !shoes.length) return [];
+
+  const combos = [];
+
+  // Generate all valid combinations
+  for (const t of tops) {
+    for (const b of bottoms) {
+      for (const s of shoes) {
+        const items = [t, b, s];
+        const scores = getColorScores(items);
+        if (scores.avg < 5) continue;
+
+        // Formality check — don't mix sport+formal
+        const formalitySet = new Set(items.map(i => i.formality).filter(Boolean));
+        if (formalitySet.has('formal') && formalitySet.has('sport')) continue;
+        if (formalitySet.has('casual') && formalitySet.has('formal')) continue;
+
+        // Determine outfit type
+        const hasSmart = items.some(i => i.formality === 'smart' || i.formality === 'formal');
+        const outfitType = hasSmart ? 'smart' : 'casual';
+
+        combos.push({ items, score: scores.avg, type: outfitType, hasOuter: false });
+      }
+    }
+  }
+
+  // Add some with outerwear
+  if (outers.length) {
+    for (const o of outers.slice(0, 2)) {
+      for (const t of tops.slice(0, 3)) {
+        for (const b of bottoms.slice(0, 3)) {
+          for (const s of shoes.slice(0, 2)) {
+            const items = [o, t, b, s];
+            const scores = getColorScores(items);
+            if (scores.avg < 5.5) continue;
+            combos.push({ items, score: scores.avg, type: 'smart', hasOuter: true });
+          }
+        }
+      }
+    }
+  }
+
+  // Sort by score, shuffle top results for variety
+  combos.sort((a, b) => b.score - a.score);
+  const top = combos.slice(0, Math.min(combos.length, count * 3));
+  // Shuffle for variety
+  for (let i = top.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [top[i], top[j]] = [top[j], top[i]];
+  }
+  return top.slice(0, count);
+}
+
+function renderComboView() {
+  const wrap = document.getElementById('comboWrap');
+
+  if (clothes.length < 3) {
+    wrap.innerHTML = `
+      <div class="combo-empty">
+        <div class="combo-empty-icon">🎲</div>
+        <div class="combo-empty-title">Yeterli parça yok</div>
+        <div class="combo-empty-sub">Kombin önerisi için en az<br>üst + alt + ayakkabı eklemelisin.</div>
+      </div>`;
+    return;
+  }
+
+  const filtered = comboFilter === 'all' ? clothes : clothes.filter(c => c.formality === comboFilter || !c.formality);
+  const combos = generateCombos(filtered, 5);
+
+  if (!combos.length) {
+    wrap.innerHTML = `
+      <div class="combo-filter-wrap">
+        ${renderComboFilters()}
+      </div>
+      <div class="combo-empty">
+        <div class="combo-empty-icon">🤔</div>
+        <div class="combo-empty-title">Kombin bulunamadı</div>
+        <div class="combo-empty-sub">Bu filtre için uyumlu parça kombinasyonu yok.<br>Farklı bir filtre dene.</div>
+      </div>`;
+    attachComboFilters();
+    return;
+  }
+
+  const outfitLabels = ['Bugünün Kombini', 'Alternatif Kombin', 'Hafta Sonu Seçimi', 'Ofis Kombinasyonu', 'Akşam Seçeneği'];
+  const typeLabels = { smart: '🏢 Smart Casual', casual: '😎 Günlük', formal: '👔 Formal' };
+
+  wrap.innerHTML = `
+    <div class="combo-filter-wrap">
+      ${renderComboFilters()}
+    </div>
+    ${combos.map((combo, i) => {
+      const harmonyPct = Math.round(combo.score * 10);
+      const harmonyLabel = harmonyPct >= 85 ? 'Mükemmel uyum' : harmonyPct >= 70 ? 'İyi uyum' : 'Yeterli uyum';
+      const roles = combo.hasOuter
+        ? ['Dış Giyim', 'Üst Giyim', 'Alt Giyim', 'Ayakkabı']
+        : ['Üst Giyim', 'Alt Giyim', 'Ayakkabı'];
+
+      return `
+        <div class="combo-outfit-card">
+          <div class="combo-outfit-header">
+            <div class="combo-outfit-label">${outfitLabels[i] || 'Kombin ' + (i+1)}</div>
+            <div class="combo-outfit-score">${typeLabels[combo.type] || ''}</div>
+          </div>
+          <div class="combo-items">
+            ${combo.items.map((item, ri) => `
+              <div class="combo-item">
+                <div class="combo-item-img">
+                  ${item.photo ? `<img src="${item.photo}" alt="${item.name}">` : CATS[item.category]?.emoji || '👔'}
+                </div>
+                <div class="combo-item-info">
+                  <div class="combo-item-role">${roles[ri] || ''}</div>
+                  <div class="combo-item-name">${item.name}</div>
+                  <div class="combo-item-meta">${[item.subcategory, item.brand, item.color].filter(Boolean).join(' · ')}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="combo-color-row">
+            ${combo.items.map(item => {
+              const hex = COLORS.find(c => c.name === item.color)?.hex || '#ddd';
+              return `<div class="combo-color-dot" style="background:${hex}" title="${item.color || ''}"></div>`;
+            }).join('')}
+            <span class="combo-harmony-label">%${harmonyPct} · ${harmonyLabel}</span>
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+  attachComboFilters();
+}
+
+function renderComboFilters() {
+  return [
+    { val: 'all', label: 'Tümü' },
+    { val: 'casual', label: '😎 Günlük' },
+    { val: 'smart', label: '🏢 Smart' },
+    { val: 'formal', label: '👔 Formal' },
+  ].map(f => `<button class="combo-filter-btn${comboFilter === f.val ? ' active' : ''}" data-filter="${f.val}">${f.label}</button>`).join('');
+}
+
+function attachComboFilters() {
+  document.querySelectorAll('.combo-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      comboFilter = btn.dataset.filter;
+      renderComboView();
+    });
+  });
+}
+
+document.getElementById('refreshCombo').addEventListener('click', renderComboView);
+
+// ── SETTINGS ─────────────────────────────────────────
+function renderSettings() {
+  // Wardrobe summary
+  const cats = { üst: 0, alt: 0, dış: 0, ayakkabı: 0 };
+  clothes.forEach(c => { if (cats[c.category] !== undefined) cats[c.category]++; });
+  const totalVal = clothes.reduce((s, c) => s + (c.price || 0), 0);
+  const combosTotal = countCombos(clothes);
+
+  document.getElementById('wardrobeSummary').innerHTML = `
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-val">${clothes.length}</div>
+        <div class="summary-lbl">Parça</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-val">${combosTotal}</div>
+        <div class="summary-lbl">Kombin</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-val">${totalVal >= 1000 ? (totalVal/1000).toFixed(1)+'K' : totalVal}₺</div>
+        <div class="summary-lbl">Değer</div>
+      </div>
+    </div>
+    <div class="summary-cats">
+      ${Object.entries(cats).filter(([,v]) => v > 0).map(([k, v]) =>
+        `<span class="summary-cat-chip">${CATS[k]?.emoji} ${v} ${k}</span>`
+      ).join('')}
+    </div>
+  `;
+}
+
+// Export
+document.getElementById('exportBtn').addEventListener('click', () => {
+  if (!clothes.length) { showToast('⚠️ Dışa aktarılacak veri yok'); return; }
+  const data = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), clothes }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `time2fit_yedek_${new Date().toLocaleDateString('tr').replace(/\./g,'-')}.json`;
+  a.click();
+  showToast('✓ Veri indirildi!');
+});
+
+// Import
+document.getElementById('importBtnRow').addEventListener('click', () => {
+  document.getElementById('importInput').click();
+});
+document.getElementById('importInput').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      const imported = data.clothes || (Array.isArray(data) ? data : null);
+      if (!imported) { showToast('⚠️ Geçersiz dosya formatı'); return; }
+      if (confirm(`${imported.length} kıyafet içe aktarılacak. Mevcut veriler korunacak. Devam?`)) {
+        // Merge — avoid duplicates by id
+        const existingIds = new Set(clothes.map(c => c.id));
+        const newItems = imported.filter(c => !existingIds.has(c.id));
+        clothes = [...newItems, ...clothes];
+        save(); renderClothes(); renderSettings();
+        showToast(`✓ ${newItems.length} yeni parça içe aktarıldı!`);
+      }
+    } catch {
+      showToast('⚠️ Dosya okunamadı');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+// Clear all
+document.getElementById('clearAllBtn').addEventListener('click', () => {
+  if (!clothes.length) { showToast('Zaten boş'); return; }
+  if (confirm(`Tüm ${clothes.length} kıyafet kalıcı olarak silinecek. Emin misin?`)) {
+    clothes = []; save(); renderClothes(); renderSettings();
+    showToast('🗑️ Tüm veriler silindi');
   }
 });
 
