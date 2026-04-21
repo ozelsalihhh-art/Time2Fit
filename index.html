@@ -14,7 +14,6 @@
 
 <style>
 :root {
-  /* Mint & Clay Palette */
   --mint-50:  #f0faf6;
   --mint-100: #d6f2e7;
   --mint-200: #a8e4cf;
@@ -23,17 +22,9 @@
   --mint-500: #2a9d82;
   --mint-600: #1f7d67;
 
-  --clay-50:  #fdf8f4;
   --clay-100: #f5ece3;
   --clay-200: #ead5c4;
-  --clay-300: #d9b89e;
   --clay-400: #c49578;
-  --clay-500: #a97455;
-  --clay-600: #8a5a3f;
-
-  --sage-100: #eaf0eb;
-  --sage-200: #c8d9cb;
-  --sage-300: #9dba9f;
 
   --bg:        #f7faf8;
   --surface:   #ffffff;
@@ -43,9 +34,6 @@
   --text-primary:   #1a2e26;
   --text-secondary: #4a6b5d;
   --text-muted:     #8aaa99;
-
-  --accent:    var(--mint-400);
-  --accent-2:  var(--clay-400);
 
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -64,648 +52,337 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html, body {
-  height: 100%;
-  overflow: hidden;
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 15px;
+  height: 100%; overflow: hidden;
+  background: var(--bg); color: var(--text-primary);
+  font-family: var(--font-body); font-size: 15px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── SPLASH ─────────────────────────────────────────── */
+/* SPLASH */
 #splash {
-  position: fixed; inset: 0;
-  background: var(--mint-100);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 12px;
-  z-index: 999;
-  transition: opacity 0.5s ease;
+  position: fixed; inset: 0; background: var(--mint-100);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  z-index: 999; transition: opacity 0.5s ease;
 }
 #splash.hide { opacity: 0; pointer-events: none; }
-.splash-logo {
-  font-family: var(--font-display);
-  font-size: 48px;
-  font-weight: 300;
-  color: var(--mint-600);
-  letter-spacing: 2px;
-}
-.splash-sub {
-  font-size: 13px;
-  color: var(--text-secondary);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
-.splash-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--mint-400);
-  margin-top: 24px;
-  animation: pulse 1.2s ease-in-out infinite;
-}
+.splash-logo { font-family: var(--font-display); font-size: 48px; font-weight: 300; color: var(--mint-600); letter-spacing: 2px; }
+.splash-sub { font-size: 13px; color: var(--text-secondary); letter-spacing: 3px; text-transform: uppercase; }
+.splash-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mint-400); margin-top: 24px; animation: pulse 1.2s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1.2)} }
 
-/* ── APP SHELL ───────────────────────────────────────── */
-#app {
-  position: fixed; inset: 0;
-  display: flex; flex-direction: column;
-  overflow: hidden;
-}
+/* APP SHELL */
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; overflow: hidden; }
 
-/* ── HEADER ──────────────────────────────────────────── */
+/* HEADER */
 .app-header {
-  padding: 16px 20px 12px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
+  padding: 16px 20px 12px; background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
 }
-.header-title {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 300;
-  color: var(--text-primary);
-  letter-spacing: 1px;
-}
-.header-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-top: 1px;
-}
+.header-title { font-family: var(--font-display); font-size: 26px; font-weight: 300; letter-spacing: 1px; }
+.header-sub { font-size: 11px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 1px; }
 .header-action {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: var(--mint-100);
-  border: none;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--mint-600);
-  font-size: 20px;
-  transition: background 0.2s;
+  width: 40px; height: 40px; border-radius: 50%; background: var(--mint-100); border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--mint-600); font-size: 20px;
 }
-.header-action:active { background: var(--mint-200); }
 
-/* ── CONTENT AREA ────────────────────────────────────── */
+/* CONTENT */
 .content-area {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
   padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
 }
 
-/* ── BOTTOM NAV ──────────────────────────────────────── */
+/* BOTTOM NAV */
 .bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: calc(var(--nav-h) + var(--safe-bottom));
-  padding-bottom: var(--safe-bottom);
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex; align-items: flex-start;
-  padding-top: 8px;
-  z-index: 100;
-  box-shadow: 0 -4px 20px rgba(26,46,38,0.06);
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom);
+  background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; align-items: flex-start; padding-top: 8px;
+  z-index: 100; box-shadow: 0 -4px 20px rgba(26,46,38,0.06);
 }
 .nav-item {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 4px;
-  cursor: pointer;
-  padding: 6px 0;
-  border: none; background: none;
-  color: var(--text-muted);
-  font-family: var(--font-body);
-  transition: color 0.2s;
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  cursor: pointer; padding: 6px 0; border: none; background: none;
+  color: var(--text-muted); font-family: var(--font-body); transition: color 0.2s;
 }
 .nav-item.active { color: var(--mint-500); }
 .nav-icon { font-size: 22px; line-height: 1; }
 .nav-label { font-size: 10px; letter-spacing: 0.5px; font-weight: 500; }
 
-/* ── VIEWS ───────────────────────────────────────────── */
+/* VIEWS */
 .view { display: none; }
 .view.active { display: block; }
 
-/* ── SECTION HEADER ──────────────────────────────────── */
-.section-header {
-  padding: 20px 20px 12px;
-  display: flex; align-items: baseline; justify-content: space-between;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-.section-count {
-  font-size: 12px;
-  color: var(--text-muted);
-}
+/* SECTION HEADER */
+.section-header { padding: 20px 20px 12px; display: flex; align-items: baseline; justify-content: space-between; }
+.section-title { font-family: var(--font-display); font-size: 22px; font-weight: 400; }
+.section-count { font-size: 12px; color: var(--text-muted); }
 
-/* ── CATEGORY TABS ───────────────────────────────────── */
-.cat-tabs {
-  display: flex;
-  gap: 8px;
-  padding: 0 20px 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
+/* STATS BAR */
+.stats-bar {
+  margin: 0 16px 16px; background: var(--surface); border-radius: var(--radius-md);
+  padding: 14px 20px; border: 1px solid var(--border); display: flex;
 }
-.cat-tabs::-webkit-scrollbar { display: none; }
-.cat-tab {
-  flex-shrink: 0;
-  padding: 7px 16px;
-  border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.cat-tab.active {
-  background: var(--mint-400);
-  border-color: var(--mint-400);
-  color: white;
-}
+.stat-item { flex: 1; text-align: center; }
+.stat-item + .stat-item { border-left: 1px solid var(--border); }
+.stat-val { font-family: var(--font-display); font-size: 24px; font-weight: 400; color: var(--mint-500); }
+.stat-lbl { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
 
-/* ── CLOTHES GRID ────────────────────────────────────── */
-.clothes-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 0 16px;
+/* SEARCH */
+.search-wrap { padding: 0 16px 8px; }
+.search-input {
+  width: 100%; padding: 11px 16px 11px 40px;
+  border-radius: var(--radius-md); border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--text-primary);
+  font-family: var(--font-body); font-size: 14px; outline: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238aaa99' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 12px center; transition: border-color 0.2s;
 }
+.search-input:focus { border-color: var(--mint-400); }
 
+/* 2-LEVEL CATEGORY TABS */
+.cat-tabs-wrap { padding: 0 16px 4px; }
+.cat-tabs-main { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 8px; }
+.cat-tabs-main::-webkit-scrollbar { display: none; }
+.cat-tab-main {
+  flex-shrink: 0; display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--text-secondary);
+  font-family: var(--font-body); font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+}
+.cat-tab-main.active { background: var(--mint-400); border-color: var(--mint-400); color: white; }
+
+.cat-tabs-sub { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 12px; min-height: 38px; }
+.cat-tabs-sub::-webkit-scrollbar { display: none; }
+.cat-tab-sub {
+  flex-shrink: 0; padding: 5px 13px; border-radius: 16px;
+  border: 1.5px solid var(--border); background: transparent;
+  color: var(--text-muted); font-family: var(--font-body); font-size: 12px; cursor: pointer; transition: all 0.15s;
+}
+.cat-tab-sub.active { background: var(--mint-100); border-color: var(--mint-300); color: var(--mint-600); }
+
+/* CLOTHES GRID */
+.clothes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; }
 .cloth-card {
-  background: var(--surface);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  transition: transform 0.15s, box-shadow 0.15s;
+  background: var(--surface); border-radius: var(--radius-md);
+  overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: transform 0.15s;
 }
-.cloth-card:active { transform: scale(0.97); box-shadow: none; }
-
+.cloth-card:active { transform: scale(0.97); }
 .cloth-img-wrap {
-  width: 100%;
-  aspect-ratio: 3/4;
-  background: var(--surface-2);
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-  overflow: hidden;
+  width: 100%; aspect-ratio: 3/4; background: var(--surface-2);
+  display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
 }
-.cloth-img-wrap img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.cloth-img-placeholder {
-  font-size: 40px;
-  opacity: 0.4;
+.cloth-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.cloth-img-placeholder { font-size: 40px; opacity: 0.4; }
+.cloth-subcat-badge {
+  position: absolute; top: 8px; left: 8px;
+  background: rgba(61,184,150,0.85); backdrop-filter: blur(4px);
+  border-radius: 8px; padding: 3px 8px; font-size: 10px; color: white; font-weight: 500;
 }
 .cloth-season-badge {
-  position: absolute;
-  top: 8px; right: 8px;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(4px);
-  border-radius: 8px;
-  padding: 3px 8px;
-  font-size: 10px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.88); backdrop-filter: blur(4px);
+  border-radius: 8px; padding: 3px 8px; font-size: 10px; color: var(--text-secondary); font-weight: 500;
 }
 .cloth-color-dot {
-  position: absolute;
-  bottom: 8px; left: 8px;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: var(--shadow-sm);
+  position: absolute; bottom: 8px; left: 8px;
+  width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: var(--shadow-sm);
 }
+.cloth-info { padding: 10px 12px 12px; }
+.cloth-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cloth-brand { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.cloth-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.cloth-wear { font-size: 11px; color: var(--text-muted); }
+.cloth-price { font-size: 12px; font-weight: 500; color: var(--mint-600); }
 
-.cloth-info {
-  padding: 10px 12px 12px;
-}
-.cloth-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cloth-brand {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-.cloth-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-}
-.cloth-wear {
-  font-size: 11px;
-  color: var(--text-muted);
-  display: flex; align-items: center; gap: 3px;
-}
-.cloth-price {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--mint-600);
-}
-
-/* ── EMPTY STATE ─────────────────────────────────────── */
-.empty-state {
-  padding: 60px 40px;
-  text-align: center;
-}
+/* EMPTY STATE */
+.empty-state { padding: 60px 40px; text-align: center; grid-column: 1/-1; }
 .empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.5; }
-.empty-title {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-.empty-sub {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
+.empty-title { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--text-secondary); margin-bottom: 8px; }
+.empty-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-/* ── FAB ─────────────────────────────────────────────── */
+/* FAB */
 .fab {
-  position: fixed;
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
-  right: 20px;
-  width: 54px; height: 54px;
-  border-radius: 50%;
-  background: var(--mint-400);
-  border: none;
-  color: white;
-  font-size: 26px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 20px rgba(61,184,150,0.4);
-  cursor: pointer;
-  z-index: 90;
-  transition: transform 0.2s, box-shadow 0.2s;
+  position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px); right: 20px;
+  width: 54px; height: 54px; border-radius: 50%; background: var(--mint-400); border: none;
+  color: white; font-size: 26px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(61,184,150,0.4); cursor: pointer; z-index: 90; transition: transform 0.2s;
 }
-.fab:active { transform: scale(0.92); box-shadow: 0 2px 10px rgba(61,184,150,0.3); }
+.fab:active { transform: scale(0.92); }
 
-/* ── MODAL ───────────────────────────────────────────── */
+/* MODAL */
 .modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(26,46,38,0.4);
-  backdrop-filter: blur(4px);
-  z-index: 200;
-  display: none; align-items: flex-end; justify-content: center;
+  position: fixed; inset: 0; background: rgba(26,46,38,0.4); backdrop-filter: blur(4px);
+  z-index: 200; display: none; align-items: flex-end; justify-content: center;
 }
 .modal-overlay.open { display: flex; }
-
 .modal-sheet {
-  width: 100%; max-width: 520px;
-  background: var(--surface);
+  width: 100%; max-width: 520px; background: var(--surface);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   padding: 0 0 calc(24px + var(--safe-bottom));
-  max-height: 92vh;
-  overflow-y: auto;
+  max-height: 92vh; overflow-y: auto;
   animation: slideUp 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
-}
-
-.modal-handle {
-  width: 36px; height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 12px auto 0;
-}
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
 .modal-header {
-  padding: 16px 20px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
   border-bottom: 1px solid var(--border);
 }
-.modal-title {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 400;
-}
+.modal-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; }
 .modal-close {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: var(--surface-2);
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-secondary);
+  width: 32px; height: 32px; border-radius: 50%; background: var(--surface-2); border: none;
+  font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary);
 }
-
 .modal-body { padding: 20px; }
 
-/* ── FORM ────────────────────────────────────────────── */
+/* FORM */
 .form-group { margin-bottom: 18px; }
-.form-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  margin-bottom: 7px;
-}
+.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 7px; }
 .form-label span { color: var(--text-muted); font-weight: 400; text-transform: none; letter-spacing: 0; }
-
 .form-input, .form-select {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
+  width: 100%; padding: 12px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--text-primary); font-family: var(--font-body); font-size: 15px;
+  outline: none; transition: border-color 0.2s; -webkit-appearance: none;
 }
-.form-input:focus, .form-select:focus {
-  border-color: var(--mint-400);
-}
+.form-input:focus, .form-select:focus { border-color: var(--mint-400); }
 
-/* Color picker row */
-.color-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+/* Form category grid */
+.form-cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.form-cat-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+  background: transparent; color: var(--text-secondary);
+  font-family: var(--font-body); font-size: 12px; cursor: pointer; transition: all 0.15s;
 }
+.form-cat-btn .cat-em { font-size: 24px; }
+.form-cat-btn.selected { background: var(--mint-100); border-color: var(--mint-400); color: var(--mint-600); }
+
+.form-subcat-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.form-subcat-btn {
+  padding: 6px 14px; border-radius: 16px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--text-muted);
+  font-family: var(--font-body); font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.form-subcat-btn.selected { background: var(--mint-400); border-color: var(--mint-400); color: white; }
+
+/* Color */
+.color-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 .color-chip {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  cursor: pointer;
-  transition: transform 0.15s, border-color 0.15s;
-  position: relative;
+  width: 34px; height: 34px; border-radius: 50%; border: 3px solid transparent;
+  cursor: pointer; transition: transform 0.15s, border-color 0.15s; position: relative;
 }
-.color-chip.selected {
-  border-color: var(--text-primary);
-  transform: scale(1.15);
-}
+.color-chip.selected { border-color: var(--text-primary); transform: scale(1.15); }
 .color-chip.selected::after {
-  content: '✓';
-  position: absolute; inset: 0;
+  content: '✓'; position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  font-size: 14px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Season chips */
+/* Season */
 .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-  padding: 7px 14px;
-  border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.15s;
+  padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--text-secondary);
+  font-family: var(--font-body); font-size: 13px; cursor: pointer; transition: all 0.15s;
 }
-.chip.selected {
-  background: var(--mint-100);
-  border-color: var(--mint-400);
-  color: var(--mint-600);
-}
+.chip.selected { background: var(--mint-100); border-color: var(--mint-400); color: var(--mint-600); }
 
-/* Photo upload */
+/* Photo */
 .photo-upload {
-  width: 100%;
-  aspect-ratio: 16/7;
-  border: 2px dashed var(--border);
-  border-radius: var(--radius-md);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  background: var(--surface-2);
-  transition: border-color 0.2s, background 0.2s;
-  position: relative;
-  overflow: hidden;
+  width: 100%; aspect-ratio: 16/7; border: 2px dashed var(--border);
+  border-radius: var(--radius-md); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer; background: var(--surface-2); position: relative; overflow: hidden; transition: all 0.2s;
 }
-.photo-upload:active { border-color: var(--mint-400); background: var(--mint-50); }
 .photo-upload input { display: none; }
 .photo-upload-icon { font-size: 28px; opacity: 0.4; }
 .photo-upload-text { font-size: 13px; color: var(--text-muted); }
 .photo-upload-opt { font-size: 11px; color: var(--text-muted); opacity: 0.7; }
-.photo-preview {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: none;
-}
+.photo-preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-/* Submit */
 .btn-primary {
-  width: 100%;
-  padding: 15px;
-  border-radius: var(--radius-md);
-  background: var(--mint-400);
-  border: none;
-  color: white;
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background 0.2s, transform 0.1s;
-  letter-spacing: 0.3px;
+  width: 100%; padding: 15px; border-radius: var(--radius-md);
+  background: var(--mint-400); border: none; color: white;
+  font-family: var(--font-body); font-size: 15px; font-weight: 500;
+  cursor: pointer; margin-top: 8px; transition: background 0.2s, transform 0.1s;
 }
 .btn-primary:active { background: var(--mint-500); transform: scale(0.98); }
 
-/* ── TOAST ───────────────────────────────────────────── */
+/* TOAST */
 .toast {
-  position: fixed;
-  top: 20px; left: 50%;
+  position: fixed; top: 20px; left: 50%;
   transform: translateX(-50%) translateY(-80px);
-  background: var(--text-primary);
-  color: white;
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  z-index: 999;
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-  white-space: nowrap;
-  box-shadow: var(--shadow-lg);
+  background: var(--text-primary); color: white;
+  padding: 12px 20px; border-radius: var(--radius-md); font-size: 14px;
+  z-index: 999; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap; box-shadow: var(--shadow-lg);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ── WARDROBE STATS BAR ──────────────────────────────── */
-.stats-bar {
-  margin: 0 16px 16px;
-  background: var(--surface);
-  border-radius: var(--radius-md);
-  padding: 14px 20px;
-  border: 1px solid var(--border);
-  display: flex;
-  gap: 0;
-}
-.stat-item {
-  flex: 1;
-  text-align: center;
-}
-.stat-item + .stat-item {
-  border-left: 1px solid var(--border);
-}
-.stat-val {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 400;
-  color: var(--mint-500);
-}
-.stat-lbl {
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-/* ── SEARCH BAR ──────────────────────────────────────── */
-.search-wrap {
-  padding: 0 16px 12px;
-}
-.search-input {
-  width: 100%;
-  padding: 11px 16px 11px 40px;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238aaa99' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: 12px center;
-}
-.search-input:focus { border-color: var(--mint-400); }
-
-/* ── COMING SOON CARD ────────────────────────────────── */
+/* COMING SOON */
 .coming-card {
-  margin: 20px 16px;
-  background: linear-gradient(135deg, var(--mint-100), var(--clay-100));
-  border-radius: var(--radius-lg);
-  padding: 28px 24px;
-  text-align: center;
-  border: 1px solid var(--mint-200);
+  margin: 16px 16px; background: linear-gradient(135deg, var(--mint-100), var(--clay-100));
+  border-radius: var(--radius-lg); padding: 28px 24px; text-align: center; border: 1px solid var(--mint-200);
 }
 .coming-icon { font-size: 40px; margin-bottom: 12px; }
-.coming-title {
-  font-family: var(--font-display);
-  font-size: 20px;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
+.coming-title { font-family: var(--font-display); font-size: 20px; margin-bottom: 6px; }
 .coming-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-.coming-badge {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 5px 14px;
-  background: var(--mint-400);
-  color: white;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
+.coming-badge { display: inline-block; margin-top: 12px; padding: 5px 14px; background: var(--mint-400); color: white; border-radius: 20px; font-size: 11px; font-weight: 500; }
 </style>
 </head>
 <body>
 
-<!-- SPLASH -->
 <div id="splash">
   <div class="splash-logo">Time2Fit</div>
   <div class="splash-sub">Capsule Wardrobe</div>
   <div class="splash-dot"></div>
 </div>
 
-<!-- APP -->
 <div id="app">
-
-  <!-- HEADER -->
   <header class="app-header">
     <div>
       <div class="header-title" id="headerTitle">Dolabım</div>
       <div class="header-sub" id="headerSub">Kıyafet Koleksiyonu</div>
     </div>
-    <button class="header-action" id="headerBtn" title="Filtrele">🔍</button>
+    <button class="header-action">🔍</button>
   </header>
 
-  <!-- CONTENT -->
-  <main class="content-area" id="contentArea">
+  <main class="content-area">
 
-    <!-- WARDROBE VIEW -->
     <div class="view active" id="viewWardrobe">
       <div class="section-header">
         <span class="section-title">Koleksiyon</span>
         <span class="section-count" id="totalCount">0 parça</span>
       </div>
 
-      <!-- Stats Bar -->
       <div class="stats-bar">
-        <div class="stat-item">
-          <div class="stat-val" id="statTotal">0</div>
-          <div class="stat-lbl">Parça</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-val" id="statCats">0</div>
-          <div class="stat-lbl">Kategori</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-val" id="statValue">0₺</div>
-          <div class="stat-lbl">Toplam</div>
-        </div>
+        <div class="stat-item"><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">Parça</div></div>
+        <div class="stat-item"><div class="stat-val" id="statCats">0</div><div class="stat-lbl">Kategori</div></div>
+        <div class="stat-item"><div class="stat-val" id="statValue">0₺</div><div class="stat-lbl">Toplam</div></div>
       </div>
 
-      <!-- Search -->
       <div class="search-wrap">
         <input class="search-input" id="searchInput" type="text" placeholder="Kıyafet ara...">
       </div>
 
-      <!-- Category Tabs -->
-      <div class="cat-tabs" id="catTabs">
-        <button class="cat-tab active" data-cat="all">Tümü</button>
-        <button class="cat-tab" data-cat="üst">Üst Giyim</button>
-        <button class="cat-tab" data-cat="alt">Alt Giyim</button>
-        <button class="cat-tab" data-cat="ayakkabı">Ayakkabı</button>
-        <button class="cat-tab" data-cat="dış">Dış Giyim</button>
-        <button class="cat-tab" data-cat="aksesuar">Aksesuar</button>
+      <div class="cat-tabs-wrap">
+        <div class="cat-tabs-main" id="catTabsMain">
+          <button class="cat-tab-main active" data-cat="all">👗 Tümü</button>
+          <button class="cat-tab-main" data-cat="üst">👕 Üst Giyim</button>
+          <button class="cat-tab-main" data-cat="alt">👖 Alt Giyim</button>
+          <button class="cat-tab-main" data-cat="dış">🧥 Dış Giyim</button>
+          <button class="cat-tab-main" data-cat="ayakkabı">👟 Ayakkabı</button>
+        </div>
+        <div class="cat-tabs-sub" id="catTabsSub"></div>
       </div>
 
-      <!-- Grid -->
       <div class="clothes-grid" id="clothesGrid"></div>
     </div>
 
-    <!-- ANALYSIS VIEW (placeholder) -->
     <div class="view" id="viewAnalysis">
-      <div class="section-header">
-        <span class="section-title">Analiz</span>
-      </div>
+      <div class="section-header"><span class="section-title">Analiz</span></div>
       <div class="coming-card">
         <div class="coming-icon">📊</div>
         <div class="coming-title">Capsule Skoru</div>
@@ -716,52 +393,38 @@ html, body {
         <div class="coming-icon">🔓</div>
         <div class="coming-title">Unlock Piece</div>
         <div class="coming-sub">Tek bir parça ekleyerek kaç yeni kombinasyon açabileceğini göster.</div>
-        <span class="coming-badge">Yakında · Part 3</span>
+        <span class="coming-badge">Yakında · Part 2</span>
       </div>
     </div>
 
-    <!-- STYLE VIEW (placeholder) -->
     <div class="view" id="viewStyle">
-      <div class="section-header">
-        <span class="section-title">Stil</span>
-      </div>
+      <div class="section-header"><span class="section-title">Stil</span></div>
       <div class="coming-card">
         <div class="coming-icon">🎨</div>
         <div class="coming-title">Renk Motoru</div>
         <div class="coming-sub">Dolabındaki renkleri analiz edip eksik renk önerileri sunacak.</div>
-        <span class="coming-badge">Yakında · Part 4</span>
+        <span class="coming-badge">Yakında · Part 3</span>
       </div>
       <div class="coming-card">
         <div class="coming-icon">🛍️</div>
         <div class="coming-title">Alım Kararı</div>
         <div class="coming-sub">Almak istediğin parça gerçekten eksik mi? Akıllı karar asistanı.</div>
-        <span class="coming-badge">Yakında · Part 5</span>
+        <span class="coming-badge">Yakında · Part 3</span>
       </div>
     </div>
 
   </main>
 
-  <!-- FAB -->
-  <button class="fab" id="fabBtn" title="Kıyafet Ekle">＋</button>
+  <button class="fab" id="fabBtn">＋</button>
 
-  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
-    <button class="nav-item active" data-view="viewWardrobe">
-      <span class="nav-icon">👔</span>
-      <span class="nav-label">Dolap</span>
-    </button>
-    <button class="nav-item" data-view="viewAnalysis">
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">Analiz</span>
-    </button>
-    <button class="nav-item" data-view="viewStyle">
-      <span class="nav-icon">✨</span>
-      <span class="nav-label">Stil</span>
-    </button>
+    <button class="nav-item active" data-view="viewWardrobe"><span class="nav-icon">👔</span><span class="nav-label">Dolap</span></button>
+    <button class="nav-item" data-view="viewAnalysis"><span class="nav-icon">📊</span><span class="nav-label">Analiz</span></button>
+    <button class="nav-item" data-view="viewStyle"><span class="nav-icon">✨</span><span class="nav-label">Stil</span></button>
   </nav>
 </div>
 
-<!-- ADD CLOTHES MODAL -->
+<!-- ADD MODAL -->
 <div class="modal-overlay" id="addModal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -771,7 +434,6 @@ html, body {
     </div>
     <div class="modal-body">
 
-      <!-- Photo (optional) -->
       <div class="form-group">
         <label class="form-label">Fotoğraf <span>(opsiyonel)</span></label>
         <div class="photo-upload" id="photoUpload">
@@ -783,40 +445,32 @@ html, body {
         </div>
       </div>
 
-      <!-- Name -->
       <div class="form-group">
         <label class="form-label">İsim / Tanım</label>
         <input class="form-input" id="inputName" type="text" placeholder="örn. Beyaz Keten Gömlek">
       </div>
 
-      <!-- Category + Brand -->
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Kategori</label>
-          <select class="form-select" id="inputCategory">
-            <option value="">Seç...</option>
-            <option value="üst">Üst Giyim</option>
-            <option value="alt">Alt Giyim</option>
-            <option value="ayakkabı">Ayakkabı</option>
-            <option value="dış">Dış Giyim</option>
-            <option value="aksesuar">Aksesuar</option>
-          </select>
+      <div class="form-group">
+        <label class="form-label">Kategori</label>
+        <div class="form-cat-grid" id="formCatGrid">
+          <button class="form-cat-btn" data-cat="üst"><span class="cat-em">👕</span>Üst Giyim</button>
+          <button class="form-cat-btn" data-cat="alt"><span class="cat-em">👖</span>Alt Giyim</button>
+          <button class="form-cat-btn" data-cat="dış"><span class="cat-em">🧥</span>Dış Giyim</button>
+          <button class="form-cat-btn" data-cat="ayakkabı"><span class="cat-em">👟</span>Ayakkabı</button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Marka <span>(ops.)</span></label>
-          <input class="form-input" id="inputBrand" type="text" placeholder="örn. Zara">
-        </div>
+        <div class="form-subcat-wrap" id="formSubcatWrap"></div>
       </div>
 
-      <!-- Color -->
+      <div class="form-group">
+        <label class="form-label">Marka <span>(opsiyonel)</span></label>
+        <input class="form-input" id="inputBrand" type="text" placeholder="örn. Zara, Mango, H&M">
+      </div>
+
       <div class="form-group">
         <label class="form-label">Renk</label>
-        <div class="color-grid" id="colorGrid">
-          <!-- Filled by JS -->
-        </div>
+        <div class="color-grid" id="colorGrid"></div>
       </div>
 
-      <!-- Season -->
       <div class="form-group">
         <label class="form-label">Sezon</label>
         <div class="chip-group" id="seasonGroup">
@@ -828,7 +482,6 @@ html, body {
         </div>
       </div>
 
-      <!-- Price + Formality -->
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Fiyat <span>(ops. ₺)</span></label>
@@ -845,9 +498,8 @@ html, body {
         </div>
       </div>
 
-      <!-- Notes -->
       <div class="form-group">
-        <label class="form-label">Not <span>(ops.)</span></label>
+        <label class="form-label">Not <span>(opsiyonel)</span></label>
         <input class="form-input" id="inputNote" type="text" placeholder="örn. Keten kumaş, yaz favorisi">
       </div>
 
@@ -856,290 +508,220 @@ html, body {
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ─────────────────────────────────────────────
-const COLORS = [
-  {name:'Beyaz',    hex:'#f5f5f5'},
-  {name:'Krem',     hex:'#f0e6d0'},
-  {name:'Bej',      hex:'#d4b896'},
-  {name:'Haki',     hex:'#8b8a5a'},
-  {name:'Yeşil',    hex:'#4a7a5c'},
-  {name:'Mavi',     hex:'#4a7aaa'},
-  {name:'Navy',     hex:'#1e3a5f'},
-  {name:'Siyah',    hex:'#1a1a1a'},
-  {name:'Gri',      hex:'#888888'},
-  {name:'Bordo',    hex:'#8b2635'},
-  {name:'Turuncu',  hex:'#d4834a'},
-  {name:'Sarı',     hex:'#d4b84a'},
-  {name:'Pembe',    hex:'#d4849a'},
-  {name:'Kahve',    hex:'#8b5a2b'},
-  {name:'Taş',      hex:'#b0a090'},
-  {name:'Lacivert', hex:'#2a3f6f'},
-];
-
-const CAT_ICONS = {
-  'üst': '👕', 'alt': '👖', 'ayakkabı': '👟',
-  'dış': '🧥', 'aksesuar': '👜', '': '👔'
+const CATS = {
+  üst:      { emoji: '👕', subs: ['Gömlek','T-Shirt','Polo','Kazak','Triko','Sweatshirt','Yelek'] },
+  alt:      { emoji: '👖', subs: ['Pantolon','Chino','Jean','Şort','Eşofman'] },
+  dış:      { emoji: '🧥', subs: ['Ceket','Blazer','Trençkot','Mont','Yağmurluk'] },
+  ayakkabı: { emoji: '👟', subs: ['Sneaker','Loafer','Oxford','Bot','Sandalet','Terlik'] },
 };
 
-// ── STATE ──────────────────────────────────────────────
-let clothes = JSON.parse(localStorage.getItem('t2f_clothes') || '[]');
-let activeCat = 'all';
-let searchQ = '';
-let selectedColor = '';
-let selectedSeason = '4 Mevsim';
-let photoDataUrl = '';
+const COLORS = [
+  {name:'Beyaz',hex:'#f5f5f5'},{name:'Krem',hex:'#f0e6d0'},{name:'Bej',hex:'#d4b896'},
+  {name:'Haki',hex:'#8b8a5a'},{name:'Yeşil',hex:'#4a7a5c'},{name:'Mavi',hex:'#4a7aaa'},
+  {name:'Navy',hex:'#1e3a5f'},{name:'Siyah',hex:'#1a1a1a'},{name:'Gri',hex:'#888888'},
+  {name:'Bordo',hex:'#8b2635'},{name:'Turuncu',hex:'#d4834a'},{name:'Sarı',hex:'#d4b84a'},
+  {name:'Pembe',hex:'#d4849a'},{name:'Kahve',hex:'#8b5a2b'},{name:'Taş',hex:'#b0a090'},
+  {name:'Lacivert',hex:'#2a3f6f'},
+];
 
-// ── SPLASH ─────────────────────────────────────────────
+let clothes = JSON.parse(localStorage.getItem('t2f_clothes') || '[]');
+let activeCat = 'all', activeSub = 'all', searchQ = '';
+let formCat = '', formSub = '', selectedColor = '', selectedSeason = '4 Mevsim', photoDataUrl = '';
+
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('splash').classList.add('hide');
-    renderClothes();
-  }, 1400);
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); renderClothes(); }, 1400);
 });
 
-// ── SAVE ───────────────────────────────────────────────
-function save() {
-  localStorage.setItem('t2f_clothes', JSON.stringify(clothes));
-}
+function save() { localStorage.setItem('t2f_clothes', JSON.stringify(clothes)); }
 
-// ── RENDER ─────────────────────────────────────────────
 function renderClothes() {
   const grid = document.getElementById('clothesGrid');
-  let filtered = clothes;
+  let f = [...clothes];
+  if (activeCat !== 'all') f = f.filter(c => c.category === activeCat);
+  if (activeSub !== 'all') f = f.filter(c => c.subcategory === activeSub);
+  if (searchQ) { const q = searchQ.toLowerCase(); f = f.filter(c => c.name.toLowerCase().includes(q) || (c.brand||'').toLowerCase().includes(q)); }
 
-  if (activeCat !== 'all') {
-    filtered = filtered.filter(c => c.category === activeCat);
-  }
-  if (searchQ) {
-    const q = searchQ.toLowerCase();
-    filtered = filtered.filter(c =>
-      c.name.toLowerCase().includes(q) ||
-      (c.brand||'').toLowerCase().includes(q)
-    );
-  }
-
-  // Update stats
   const cats = new Set(clothes.map(c => c.category)).size;
-  const totalVal = clothes.reduce((s,c) => s + (c.price||0), 0);
+  const val = clothes.reduce((s,c) => s+(c.price||0), 0);
   document.getElementById('statTotal').textContent = clothes.length;
   document.getElementById('statCats').textContent = cats;
-  document.getElementById('statValue').textContent = totalVal >= 1000
-    ? (totalVal/1000).toFixed(1)+'K₺'
-    : totalVal+'₺';
-  document.getElementById('totalCount').textContent = filtered.length + ' parça';
+  document.getElementById('statValue').textContent = val >= 1000 ? (val/1000).toFixed(1)+'K₺' : val+'₺';
+  document.getElementById('totalCount').textContent = f.length + ' parça';
 
-  if (!filtered.length) {
-    grid.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1">
-        <div class="empty-icon">👔</div>
-        <div class="empty-title">Henüz kıyafet yok</div>
-        <div class="empty-sub">+ butonuna basarak<br>dolabını oluşturmaya başla</div>
-      </div>`;
+  if (!f.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">👔</div><div class="empty-title">Henüz kıyafet yok</div><div class="empty-sub">+ butonuna basarak<br>dolabını oluşturmaya başla</div></div>`;
     return;
   }
-
-  grid.innerHTML = filtered.map((c,i) => {
+  grid.innerHTML = f.map(c => {
     const color = COLORS.find(x => x.name === c.color);
-    return `
-      <div class="cloth-card" onclick="wearItem(${clothes.indexOf(c)})">
-        <div class="cloth-img-wrap">
-          ${c.photo
-            ? `<img src="${c.photo}" alt="${c.name}" loading="lazy">`
-            : `<div class="cloth-img-placeholder">${CAT_ICONS[c.category]||'👔'}</div>`
-          }
-          ${c.season ? `<div class="cloth-season-badge">${c.season}</div>` : ''}
-          ${color ? `<div class="cloth-color-dot" style="background:${color.hex}"></div>` : ''}
+    const idx = clothes.indexOf(c);
+    return `<div class="cloth-card" onclick="wearItem(${idx})">
+      <div class="cloth-img-wrap">
+        ${c.photo ? `<img src="${c.photo}" alt="${c.name}" loading="lazy">` : `<div class="cloth-img-placeholder">${CATS[c.category]?.emoji||'👔'}</div>`}
+        ${c.subcategory ? `<div class="cloth-subcat-badge">${c.subcategory}</div>` : ''}
+        ${c.season && c.season !== '4 Mevsim' ? `<div class="cloth-season-badge">${c.season}</div>` : ''}
+        ${color ? `<div class="cloth-color-dot" style="background:${color.hex}"></div>` : ''}
+      </div>
+      <div class="cloth-info">
+        <div class="cloth-name">${c.name}</div>
+        ${c.brand ? `<div class="cloth-brand">${c.brand}</div>` : ''}
+        <div class="cloth-meta">
+          <div class="cloth-wear">👁 ${c.wears||0}x</div>
+          ${c.price ? `<div class="cloth-price">${c.price}₺</div>` : ''}
         </div>
-        <div class="cloth-info">
-          <div class="cloth-name">${c.name}</div>
-          ${c.brand ? `<div class="cloth-brand">${c.brand}</div>` : ''}
-          <div class="cloth-meta">
-            <div class="cloth-wear">👁 ${c.wears||0}x</div>
-            ${c.price ? `<div class="cloth-price">${c.price}₺</div>` : ''}
-          </div>
-        </div>
-      </div>`;
+      </div>
+    </div>`;
   }).join('');
 }
 
 function wearItem(idx) {
   clothes[idx].wears = (clothes[idx].wears||0) + 1;
-  save();
-  renderClothes();
-  showToast('Giyildi olarak işaretlendi ✓');
+  save(); renderClothes(); showToast('Giyildi olarak işaretlendi ✓');
 }
 
-// ── NAV ────────────────────────────────────────────────
+// Main category tabs
+document.querySelectorAll('.cat-tab-main').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab-main').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat; activeSub = 'all';
+    renderSubTabs(); renderClothes();
+  });
+});
+
+function renderSubTabs() {
+  const wrap = document.getElementById('catTabsSub');
+  if (activeCat === 'all' || !CATS[activeCat]) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `<button class="cat-tab-sub active" data-sub="all">Tümü</button>` +
+    CATS[activeCat].subs.map(s => `<button class="cat-tab-sub" data-sub="${s}">${s}</button>`).join('');
+  wrap.querySelectorAll('.cat-tab-sub').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.cat-tab-sub').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); activeSub = btn.dataset.sub; renderClothes();
+    });
+  });
+}
+
+// Nav
 document.querySelectorAll('.nav-item').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(btn.dataset.view).classList.add('active');
-
-    const titles = {
-      viewWardrobe: ['Dolabım', 'Kıyafet Koleksiyonu'],
-      viewAnalysis: ['Analiz', 'Capsule & Skorlar'],
-      viewStyle: ['Stil', 'Renk & Öneriler'],
-    };
-    const t = titles[btn.dataset.view];
+    const t = {viewWardrobe:['Dolabım','Kıyafet Koleksiyonu'],viewAnalysis:['Analiz','Capsule & Skorlar'],viewStyle:['Stil','Renk & Öneriler']}[btn.dataset.view];
     document.getElementById('headerTitle').textContent = t[0];
     document.getElementById('headerSub').textContent = t[1];
-
-    // Show/hide FAB
-    document.getElementById('fabBtn').style.display =
-      btn.dataset.view === 'viewWardrobe' ? 'flex' : 'none';
+    document.getElementById('fabBtn').style.display = btn.dataset.view === 'viewWardrobe' ? 'flex' : 'none';
   });
 });
 
-// ── CATEGORY TABS ──────────────────────────────────────
-document.querySelectorAll('.cat-tab').forEach(btn => {
+document.getElementById('searchInput').addEventListener('input', e => { searchQ = e.target.value; renderClothes(); });
+
+// Modal
+document.getElementById('fabBtn').addEventListener('click', openModal);
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('addModal').addEventListener('click', e => { if (e.target.id === 'addModal') closeModal(); });
+function openModal() { document.getElementById('addModal').classList.add('open'); }
+function closeModal() { document.getElementById('addModal').classList.remove('open'); resetForm(); }
+
+// Form category
+document.querySelectorAll('.form-cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeCat = btn.dataset.cat;
-    renderClothes();
+    document.querySelectorAll('.form-cat-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected'); formCat = btn.dataset.cat; formSub = '';
+    renderFormSubcats();
   });
 });
 
-// ── SEARCH ─────────────────────────────────────────────
-document.getElementById('searchInput').addEventListener('input', e => {
-  searchQ = e.target.value;
-  renderClothes();
-});
-
-// ── FAB / MODAL ────────────────────────────────────────
-document.getElementById('fabBtn').addEventListener('click', () => openModal());
-document.getElementById('modalClose').addEventListener('click', () => closeModal());
-document.getElementById('addModal').addEventListener('click', e => {
-  if (e.target === document.getElementById('addModal')) closeModal();
-});
-
-function openModal() {
-  document.getElementById('addModal').classList.add('open');
-  document.getElementById('inputName').focus();
-}
-function closeModal() {
-  document.getElementById('addModal').classList.remove('open');
-  resetForm();
+function renderFormSubcats() {
+  const wrap = document.getElementById('formSubcatWrap');
+  if (!formCat || !CATS[formCat]) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = CATS[formCat].subs.map(s =>
+    `<button class="form-subcat-btn" data-sub="${s}">${s}</button>`
+  ).join('');
+  wrap.querySelectorAll('.form-subcat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.form-subcat-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected'); formSub = btn.dataset.sub;
+    });
+  });
 }
 
-// ── COLOR GRID ─────────────────────────────────────────
+// Colors
 function buildColorGrid() {
-  const grid = document.getElementById('colorGrid');
-  grid.innerHTML = COLORS.map(c => `
-    <div class="color-chip ${selectedColor===c.name?'selected':''}"
-         style="background:${c.hex}"
-         title="${c.name}"
-         onclick="pickColor('${c.name}')"></div>
-  `).join('');
+  document.getElementById('colorGrid').innerHTML = COLORS.map(c =>
+    `<div class="color-chip${selectedColor===c.name?' selected':''}" style="background:${c.hex}" title="${c.name}" onclick="pickColor('${c.name}')"></div>`
+  ).join('');
 }
-function pickColor(name) {
-  selectedColor = selectedColor === name ? '' : name;
-  buildColorGrid();
-}
+function pickColor(name) { selectedColor = selectedColor === name ? '' : name; buildColorGrid(); }
 buildColorGrid();
 
-// ── SEASON CHIPS ───────────────────────────────────────
+// Season
 document.querySelectorAll('#seasonGroup .chip').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#seasonGroup .chip').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedSeason = btn.dataset.val;
+    btn.classList.add('selected'); selectedSeason = btn.dataset.val;
   });
 });
 
-// ── PHOTO ──────────────────────────────────────────────
-document.getElementById('photoUpload').addEventListener('click', () => {
-  document.getElementById('photoInput').click();
-});
+// Photo
+document.getElementById('photoUpload').addEventListener('click', () => document.getElementById('photoInput').click());
 document.getElementById('photoInput').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
     photoDataUrl = ev.target.result;
     const prev = document.getElementById('photoPreview');
-    prev.src = photoDataUrl;
-    prev.style.display = 'block';
+    prev.src = photoDataUrl; prev.style.display = 'block';
     document.querySelectorAll('.photo-upload > :not(img)').forEach(el => el.style.display='none');
   };
   reader.readAsDataURL(file);
 });
 
-// ── SAVE ITEM ──────────────────────────────────────────
+// Save
 document.getElementById('saveBtn').addEventListener('click', () => {
   const name = document.getElementById('inputName').value.trim();
-  const category = document.getElementById('inputCategory').value;
-
-  if (!name) { showToast('⚠️ İsim giriniz'); return; }
-  if (!category) { showToast('⚠️ Kategori seçiniz'); return; }
-
-  const item = {
-    id: Date.now(),
-    name,
-    category,
+  if (!name)    { showToast('⚠️ İsim giriniz'); return; }
+  if (!formCat) { showToast('⚠️ Kategori seçiniz'); return; }
+  clothes.unshift({
+    id: Date.now(), name, category: formCat, subcategory: formSub,
     brand: document.getElementById('inputBrand').value.trim(),
-    color: selectedColor,
-    season: selectedSeason,
+    color: selectedColor, season: selectedSeason,
     price: parseInt(document.getElementById('inputPrice').value) || 0,
     formality: document.getElementById('inputFormality').value,
     note: document.getElementById('inputNote').value.trim(),
-    photo: photoDataUrl,
-    wears: 0,
-    addedAt: new Date().toISOString(),
-  };
-
-  clothes.unshift(item);
-  save();
-  closeModal();
-  renderClothes();
-  showToast('✓ Dolaba eklendi!');
+    photo: photoDataUrl, wears: 0, addedAt: new Date().toISOString(),
+  });
+  save(); closeModal(); renderClothes(); showToast('✓ Dolaba eklendi!');
 });
 
-// ── RESET FORM ─────────────────────────────────────────
 function resetForm() {
-  document.getElementById('inputName').value = '';
-  document.getElementById('inputCategory').value = '';
-  document.getElementById('inputBrand').value = '';
-  document.getElementById('inputPrice').value = '';
-  document.getElementById('inputNote').value = '';
-  selectedColor = '';
-  selectedSeason = '4 Mevsim';
-  photoDataUrl = '';
-  document.getElementById('photoPreview').style.display = 'none';
-  document.getElementById('photoPreview').src = '';
+  ['inputName','inputBrand','inputPrice','inputNote'].forEach(id => document.getElementById(id).value = '');
+  formCat = ''; formSub = ''; selectedColor = ''; selectedSeason = '4 Mevsim'; photoDataUrl = '';
+  document.querySelectorAll('.form-cat-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('formSubcatWrap').innerHTML = '';
+  const prev = document.getElementById('photoPreview');
+  prev.style.display = 'none'; prev.src = '';
   document.querySelectorAll('.photo-upload > :not(img)').forEach(el => el.style.display='');
   document.querySelectorAll('#seasonGroup .chip').forEach(b => b.classList.remove('selected'));
   document.querySelector('#seasonGroup .chip[data-val="4 Mevsim"]').classList.add('selected');
   buildColorGrid();
 }
 
-// ── TOAST ──────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-// ── PWA MANIFEST (inline) ──────────────────────────────
-const manifest = {
-  name: 'Time2Fit',
-  short_name: 'Time2Fit',
-  start_url: '.',
-  display: 'standalone',
-  background_color: '#e8f5f0',
-  theme_color: '#3db896',
-  icons: [{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">👔</text></svg>',sizes:'192x192',type:'image/svg+xml'}]
-};
-const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-const ml = document.createElement('link');
-ml.rel='manifest'; ml.href = URL.createObjectURL(blob);
+// PWA
+const m = {name:'Time2Fit',short_name:'Time2Fit',start_url:'.',display:'standalone',background_color:'#e8f5f0',theme_color:'#3db896'};
+const ml = document.createElement('link'); ml.rel='manifest';
+ml.href = URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/json'}));
 document.head.appendChild(ml);
 </script>
 </body>
