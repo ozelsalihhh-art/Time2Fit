@@ -269,15 +269,29 @@ html, body {
 /* Color */
 .color-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 .color-chip {
-  width: 34px; height: 34px; border-radius: 50%; border: 3px solid transparent;
-  cursor: pointer; transition: transform 0.15s, border-color 0.15s; position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  cursor: pointer; transition: transform 0.15s; background: none; border: none; padding: 0;
 }
-.color-chip.selected { border-color: var(--text-primary); transform: scale(1.15); }
-.color-chip.selected::after {
+.color-chip:active { transform: scale(0.93); }
+.color-dot {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 3px solid transparent;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+}
+.color-chip.selected .color-dot {
+  border-color: var(--text-primary); transform: scale(1.12);
+}
+.color-chip.selected .color-dot::after {
   content: '✓'; position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  font-size: 13px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.6);
 }
+.color-name {
+  font-size: 10px; color: var(--text-muted); white-space: nowrap;
+  font-family: var(--font-body);
+}
+.color-chip.selected .color-name { color: var(--mint-600); font-weight: 500; }
 
 /* Season */
 .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -330,6 +344,127 @@ html, body {
 .coming-title { font-family: var(--font-display); font-size: 20px; margin-bottom: 6px; }
 .coming-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 .coming-badge { display: inline-block; margin-top: 12px; padding: 5px 14px; background: var(--mint-400); color: white; border-radius: 20px; font-size: 11px; font-weight: 500; }
+
+/* ── ANALYSIS STYLES ── */
+.analysis-wrap { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+/* Capsule Score Card */
+.score-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.score-card-header {
+  padding: 18px 20px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.score-card-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; }
+.score-card-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* Big score circle */
+.score-circle-wrap { display: flex; justify-content: center; padding: 8px 0 20px; }
+.score-circle {
+  position: relative; width: 140px; height: 140px;
+}
+.score-circle svg { transform: rotate(-90deg); }
+.score-circle-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+.score-circle-fill {
+  fill: none; stroke: var(--mint-400); stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 339.3; /* 2π×54 */
+  stroke-dashoffset: 339.3;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.score-circle-fill.warn { stroke: var(--clay-400); }
+.score-circle-fill.danger { stroke: #e57373; }
+.score-circle-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.score-num { font-family: var(--font-display); font-size: 38px; font-weight: 300; color: var(--text-primary); line-height: 1; }
+.score-denom { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.score-label { font-size: 12px; font-weight: 500; color: var(--mint-500); margin-top: 4px; }
+
+/* Sub scores */
+.sub-scores { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+.sub-score-row { display: flex; flex-direction: column; gap: 5px; }
+.sub-score-top { display: flex; justify-content: space-between; align-items: center; }
+.sub-score-name { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.sub-score-val { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.sub-score-bar { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.sub-score-fill {
+  height: 100%; background: var(--mint-400); border-radius: 3px;
+  width: 0; transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+.sub-score-fill.warn { background: var(--clay-400); }
+
+/* Insights list */
+.insights-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.insights-title { font-family: var(--font-display); font-size: 18px; font-weight: 400; margin-bottom: 14px; }
+.insight-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.insight-item:last-child { border-bottom: none; padding-bottom: 0; }
+.insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.insight-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.insight-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* Unlock Piece Card */
+.unlock-card {
+  background: linear-gradient(135deg, var(--mint-50), #fff);
+  border-radius: var(--radius-lg); border: 1.5px solid var(--mint-200);
+  padding: 20px; box-shadow: var(--shadow-sm);
+}
+.unlock-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.unlock-icon { font-size: 28px; }
+.unlock-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; }
+.unlock-sub { font-size: 12px; color: var(--text-muted); }
+
+.unlock-item {
+  background: var(--surface); border-radius: var(--radius-md);
+  padding: 14px 16px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+  display: flex; gap: 14px; align-items: center;
+}
+.unlock-item:last-child { margin-bottom: 0; }
+.unlock-rank {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--mint-100); color: var(--mint-600);
+  font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.unlock-info { flex: 1; }
+.unlock-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.unlock-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+.unlock-combos {
+  text-align: right; flex-shrink: 0;
+}
+.unlock-combo-num { font-family: var(--font-display); font-size: 22px; color: var(--mint-500); line-height: 1; }
+.unlock-combo-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Empty analysis */
+.analysis-empty {
+  padding: 48px 24px; text-align: center;
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+.analysis-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.analysis-empty-title { font-family: var(--font-display); font-size: 20px; color: var(--text-secondary); margin-bottom: 6px; }
+.analysis-empty-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* Refresh btn */
+.btn-refresh {
+  width: 100%; padding: 13px; border-radius: var(--radius-md);
+  background: var(--mint-100); border: 1.5px solid var(--mint-300); color: var(--mint-600);
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-refresh:active { background: var(--mint-200); }
 </style>
 </head>
 <body>
@@ -382,18 +517,12 @@ html, body {
     </div>
 
     <div class="view" id="viewAnalysis">
-      <div class="section-header"><span class="section-title">Analiz</span></div>
-      <div class="coming-card">
-        <div class="coming-icon">📊</div>
-        <div class="coming-title">Capsule Skoru</div>
-        <div class="coming-sub">Dolabının kapsül uyumunu, renk tutarlılığını ve eksik parçaları analiz ediyoruz.</div>
-        <span class="coming-badge">Yakında · Part 2</span>
+      <div class="section-header">
+        <span class="section-title">Analiz</span>
+        <button class="btn-refresh" id="refreshAnalysis" style="width:auto;padding:6px 14px;font-size:12px;">🔄 Yenile</button>
       </div>
-      <div class="coming-card">
-        <div class="coming-icon">🔓</div>
-        <div class="coming-title">Unlock Piece</div>
-        <div class="coming-sub">Tek bir parça ekleyerek kaç yeni kombinasyon açabileceğini göster.</div>
-        <span class="coming-badge">Yakında · Part 2</span>
+      <div class="analysis-wrap" id="analysisWrap">
+        <!-- Rendered by JS -->
       </div>
     </div>
 
@@ -654,7 +783,10 @@ function renderFormSubcats() {
 // Colors
 function buildColorGrid() {
   document.getElementById('colorGrid').innerHTML = COLORS.map(c =>
-    `<div class="color-chip${selectedColor===c.name?' selected':''}" style="background:${c.hex}" title="${c.name}" onclick="pickColor('${c.name}')"></div>`
+    `<div class="color-chip${selectedColor===c.name?' selected':''}" onclick="pickColor('${c.name}')">
+      <div class="color-dot" style="background:${c.hex}"></div>
+      <div class="color-name">${c.name}</div>
+    </div>`
   ).join('');
 }
 function pickColor(name) { selectedColor = selectedColor === name ? '' : name; buildColorGrid(); }
@@ -717,6 +849,371 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2400);
 }
+
+// ── ANALYSIS ENGINE ────────────────────────────────────
+
+// COLOR COMPATIBILITY MATRIX (0-10)
+// Her renk çifti için uyum skoru — renk teorisi + smart casual moda kuralları
+const COLOR_MATRIX = {
+  'Beyaz':    { 'Beyaz':0,'Krem':8,'Bej':9,'Haki':9,'Yeşil':8,'Mavi':9,'Navy':10,'Siyah':10,'Gri':9,'Bordo':9,'Turuncu':7,'Sarı':7,'Pembe':8,'Kahve':8,'Taş':9,'Lacivert':10 },
+  'Krem':     { 'Beyaz':8,'Krem':0,'Bej':7,'Haki':9,'Yeşil':7,'Mavi':8,'Navy':9,'Siyah':7,'Gri':8,'Bordo':8,'Turuncu':8,'Sarı':7,'Pembe':8,'Kahve':9,'Taş':9,'Lacivert':9 },
+  'Bej':      { 'Beyaz':9,'Krem':7,'Bej':0,'Haki':9,'Yeşil':8,'Mavi':8,'Navy':9,'Siyah':6,'Gri':8,'Bordo':8,'Turuncu':8,'Sarı':6,'Pembe':7,'Kahve':9,'Taş':9,'Lacivert':9 },
+  'Haki':     { 'Beyaz':9,'Krem':9,'Bej':9,'Haki':0,'Yeşil':5,'Mavi':8,'Navy':9,'Siyah':8,'Gri':8,'Bordo':6,'Turuncu':7,'Sarı':5,'Pembe':5,'Kahve':8,'Taş':9,'Lacivert':9 },
+  'Yeşil':    { 'Beyaz':8,'Krem':7,'Bej':8,'Haki':5,'Yeşil':0,'Mavi':5,'Navy':7,'Siyah':7,'Gri':7,'Bordo':4,'Turuncu':5,'Sarı':6,'Pembe':4,'Kahve':7,'Taş':7,'Lacivert':7 },
+  'Mavi':     { 'Beyaz':9,'Krem':8,'Bej':8,'Haki':8,'Yeşil':5,'Mavi':0,'Navy':4,'Siyah':7,'Gri':8,'Bordo':6,'Turuncu':5,'Sarı':6,'Pembe':6,'Kahve':7,'Taş':8,'Lacivert':4 },
+  'Navy':     { 'Beyaz':10,'Krem':9,'Bej':9,'Haki':9,'Yeşil':7,'Mavi':4,'Navy':0,'Siyah':5,'Gri':9,'Bordo':7,'Turuncu':5,'Sarı':6,'Pembe':6,'Kahve':8,'Taş':8,'Lacivert':4 },
+  'Siyah':    { 'Beyaz':10,'Krem':7,'Bej':6,'Haki':8,'Yeşil':7,'Mavi':7,'Navy':5,'Siyah':0,'Gri':9,'Bordo':8,'Turuncu':6,'Sarı':7,'Pembe':7,'Kahve':7,'Taş':7,'Lacivert':5 },
+  'Gri':      { 'Beyaz':9,'Krem':8,'Bej':8,'Haki':8,'Yeşil':7,'Mavi':8,'Navy':9,'Siyah':9,'Gri':0,'Bordo':9,'Turuncu':6,'Sarı':6,'Pembe':7,'Kahve':8,'Taş':8,'Lacivert':9 },
+  'Bordo':    { 'Beyaz':9,'Krem':8,'Bej':8,'Haki':6,'Yeşil':4,'Mavi':6,'Navy':7,'Siyah':8,'Gri':9,'Bordo':0,'Turuncu':3,'Sarı':4,'Pembe':4,'Kahve':7,'Taş':8,'Lacivert':7 },
+  'Turuncu':  { 'Beyaz':7,'Krem':8,'Bej':8,'Haki':7,'Yeşil':5,'Mavi':5,'Navy':5,'Siyah':6,'Gri':6,'Bordo':3,'Turuncu':0,'Sarı':4,'Pembe':4,'Kahve':7,'Taş':7,'Lacivert':5 },
+  'Sarı':     { 'Beyaz':7,'Krem':7,'Bej':6,'Haki':5,'Yeşil':6,'Mavi':6,'Navy':6,'Siyah':7,'Gri':6,'Bordo':4,'Turuncu':4,'Sarı':0,'Pembe':5,'Kahve':6,'Taş':6,'Lacivert':6 },
+  'Pembe':    { 'Beyaz':8,'Krem':8,'Bej':7,'Haki':5,'Yeşil':4,'Mavi':6,'Navy':6,'Siyah':7,'Gri':7,'Bordo':4,'Turuncu':4,'Sarı':5,'Pembe':0,'Kahve':6,'Taş':7,'Lacivert':6 },
+  'Kahve':    { 'Beyaz':8,'Krem':9,'Bej':9,'Haki':8,'Yeşil':7,'Mavi':7,'Navy':8,'Siyah':7,'Gri':8,'Bordo':7,'Turuncu':7,'Sarı':6,'Pembe':6,'Kahve':0,'Taş':9,'Lacivert':8 },
+  'Taş':      { 'Beyaz':9,'Krem':9,'Bej':9,'Haki':9,'Yeşil':7,'Mavi':8,'Navy':8,'Siyah':7,'Gri':8,'Bordo':8,'Turuncu':7,'Sarı':6,'Pembe':7,'Kahve':9,'Taş':0,'Lacivert':8 },
+  'Lacivert': { 'Beyaz':10,'Krem':9,'Bej':9,'Haki':9,'Yeşil':7,'Mavi':4,'Navy':4,'Siyah':5,'Gri':9,'Bordo':7,'Turuncu':5,'Sarı':6,'Pembe':6,'Kahve':8,'Taş':8,'Lacivert':0 },
+};
+
+// Capsule için ideal kategoriler ve minimum sayılar
+const CAPSULE_IDEAL = {
+  üst:      { min: 5,  ideal: 8  },
+  alt:      { min: 3,  ideal: 5  },
+  dış:      { min: 1,  ideal: 3  },
+  ayakkabı: { min: 2,  ideal: 4  },
+};
+
+// Kombin için geçerli formüller
+// Her kombin: üst + alt + ayakkabı (dış opsiyonel)
+function countCombos(wardrobe) {
+  const tops     = wardrobe.filter(c => c.category === 'üst');
+  const bottoms  = wardrobe.filter(c => c.category === 'alt');
+  const shoes    = wardrobe.filter(c => c.category === 'ayakkabı');
+  const outers   = wardrobe.filter(c => c.category === 'dış');
+
+  if (!tops.length || !bottoms.length || !shoes.length) return 0;
+
+  let count = 0;
+  for (const t of tops) {
+    for (const b of bottoms) {
+      for (const s of shoes) {
+        // Renk uyumu kontrolü — en az 2 çift ≥6 skor olmalı
+        const scores = getColorScores([t, b, s]);
+        if (scores.avg >= 5) count++;
+      }
+    }
+  }
+  // Dış giyimli kombiler ekstra sayılır
+  for (const o of outers) {
+    for (const t of tops) {
+      for (const b of bottoms) {
+        for (const s of shoes) {
+          const scores = getColorScores([o, t, b, s]);
+          if (scores.avg >= 5) count++;
+        }
+      }
+    }
+  }
+  return count;
+}
+
+function getColorScores(items) {
+  const colors = items.map(i => i.color).filter(Boolean);
+  if (colors.length < 2) return { avg: 7, min: 7 };
+  let total = 0, pairs = 0;
+  for (let i = 0; i < colors.length; i++) {
+    for (let j = i+1; j < colors.length; j++) {
+      const score = COLOR_MATRIX[colors[i]]?.[colors[j]] ?? 6;
+      total += score; pairs++;
+    }
+  }
+  return { avg: pairs ? total/pairs : 7 };
+}
+
+// Renk uyum skoru (dolap geneli)
+function calcColorHarmony(wardrobe) {
+  const colors = [...new Set(wardrobe.map(c => c.color).filter(Boolean))];
+  if (colors.length < 2) return colors.length === 1 ? 85 : 50;
+
+  let total = 0, pairs = 0;
+  for (let i = 0; i < colors.length; i++) {
+    for (let j = i+1; j < colors.length; j++) {
+      total += COLOR_MATRIX[colors[i]]?.[colors[j]] ?? 6;
+      pairs++;
+    }
+  }
+  const avg = pairs ? total/pairs : 6;
+  return Math.round((avg / 10) * 100);
+}
+
+// Çeşitlilik skoru
+function calcDiversity(wardrobe) {
+  const cats = Object.keys(CAPSULE_IDEAL);
+  let score = 0;
+  for (const cat of cats) {
+    const count = wardrobe.filter(c => c.category === cat).length;
+    const { min, ideal } = CAPSULE_IDEAL[cat];
+    if (count >= ideal)     score += 25;
+    else if (count >= min)  score += 15;
+    else if (count > 0)     score += 8;
+  }
+  return score; // max 100
+}
+
+// Kullanım skoru (wear count)
+function calcUsage(wardrobe) {
+  if (!wardrobe.length) return 0;
+  const worn = wardrobe.filter(c => (c.wears||0) > 0).length;
+  return Math.round((worn / wardrobe.length) * 100);
+}
+
+// Ana capsule skoru
+function calcCapsuleScore(wardrobe) {
+  if (wardrobe.length < 3) return { total: 0, color: 0, diversity: 0, usage: 0, combos: 0 };
+  const color     = calcColorHarmony(wardrobe);
+  const diversity = calcDiversity(wardrobe);
+  const usage     = calcUsage(wardrobe);
+  const combos    = Math.min(100, countCombos(wardrobe) * 4);
+  const total     = Math.round(color*0.35 + diversity*0.30 + combos*0.25 + usage*0.10);
+  return { total, color, diversity, usage, combos };
+}
+
+// Unlock Piece — hangi parçayı eklersen en çok kombin açılır?
+function calcUnlockPieces(wardrobe) {
+  const baseCombos = countCombos(wardrobe);
+  const candidates = [];
+
+  // Potansiyel eklemeler: her kategori × her renk kombinasyonu
+  const testColors = ['Beyaz','Navy','Haki','Gri','Bej','Taş','Kahve','Mavi'];
+  const testItems = [
+    { category:'üst', subcategory:'Gömlek', color:'Beyaz', name:'Beyaz Gömlek' },
+    { category:'üst', subcategory:'Gömlek', color:'Navy', name:'Navy Gömlek' },
+    { category:'üst', subcategory:'Gömlek', color:'Haki', name:'Haki Gömlek' },
+    { category:'üst', subcategory:'T-Shirt', color:'Beyaz', name:'Beyaz T-Shirt' },
+    { category:'üst', subcategory:'T-Shirt', color:'Gri', name:'Gri T-Shirt' },
+    { category:'üst', subcategory:'Kazak', color:'Navy', name:'Navy Kazak' },
+    { category:'üst', subcategory:'Kazak', color:'Gri', name:'Gri Kazak' },
+    { category:'alt', subcategory:'Chino', color:'Haki', name:'Haki Chino' },
+    { category:'alt', subcategory:'Chino', color:'Navy', name:'Navy Chino' },
+    { category:'alt', subcategory:'Chino', color:'Bej', name:'Bej Chino' },
+    { category:'alt', subcategory:'Pantolon', color:'Gri', name:'Gri Pantolon' },
+    { category:'alt', subcategory:'Pantolon', color:'Taş', name:'Taş Pantolon' },
+    { category:'alt', subcategory:'Jean', color:'Navy', name:'Navy Jean' },
+    { category:'ayakkabı', subcategory:'Loafer', color:'Kahve', name:'Kahve Loafer' },
+    { category:'ayakkabı', subcategory:'Sneaker', color:'Beyaz', name:'Beyaz Sneaker' },
+    { category:'ayakkabı', subcategory:'Oxford', color:'Kahve', name:'Kahve Oxford' },
+    { category:'dış', subcategory:'Blazer', color:'Navy', name:'Navy Blazer' },
+    { category:'dış', subcategory:'Blazer', color:'Gri', name:'Gri Blazer' },
+  ];
+
+  for (const item of testItems) {
+    // Zaten dolaptaki benzer parça varsa atla
+    const alreadyHas = wardrobe.some(c =>
+      c.category === item.category &&
+      c.subcategory === item.subcategory &&
+      c.color === item.color
+    );
+    if (alreadyHas) continue;
+
+    const newCombos = countCombos([...wardrobe, { ...item, wears: 0 }]);
+    const gain = newCombos - baseCombos;
+    if (gain > 0) candidates.push({ ...item, gain, newTotal: newCombos });
+  }
+
+  return candidates.sort((a,b) => b.gain - a.gain).slice(0, 3);
+}
+
+// Insights — dolap analizi yorumları
+function buildInsights(wardrobe, scores) {
+  const insights = [];
+  const cats = { üst: 0, alt: 0, dış: 0, ayakkabı: 0 };
+  wardrobe.forEach(c => { if (cats[c.category] !== undefined) cats[c.category]++; });
+
+  if (wardrobe.length < 5) {
+    insights.push({ icon:'👋', text:'Dolabına <strong>en az 5 parça</strong> ekle — analiz daha isabetli olsun.' });
+  }
+  if (cats.alt < 2) {
+    insights.push({ icon:'👖', text:'<strong>Alt giyim çeşitliliğin az.</strong> 2–3 farklı pantolon/chino eklemek kombinlerini katlar.' });
+  }
+  if (cats.ayakkabı < 2) {
+    insights.push({ icon:'👟', text:'<strong>Ayakkabı çeşidi kritik.</strong> En az 1 casual (sneaker) + 1 smart (loafer/oxford) olmalı.' });
+  }
+  if (cats.dış === 0) {
+    insights.push({ icon:'🧥', text:'<strong>Dış giyim yok.</strong> Tek bir navy blazer tüm kombinlerini formal/smart seviyeye taşır.' });
+  }
+  if (scores.color < 60) {
+    insights.push({ icon:'🎨', text:'<strong>Renk uyumu düşük.</strong> Dolabına nötr renkler (beyaz, bej, haki, gri) ekle — her şeyle gider.' });
+  }
+  if (scores.color >= 80) {
+    insights.push({ icon:'✅', text:'<strong>Renk uyumun çok güçlü!</strong> Dolabındaki renkler birbirleriyle gayet iyi çalışıyor.' });
+  }
+  if (scores.usage < 40 && wardrobe.length > 3) {
+    insights.push({ icon:'💤', text:'Kıyafetlerinin büyük kısmı <strong>hiç giyilmedi.</strong> Dolap temizliği zamanı!' });
+  }
+  const unworn = wardrobe.filter(c => (c.wears||0) === 0);
+  if (unworn.length > 0 && wardrobe.length > 3) {
+    insights.push({ icon:'🏷️', text:`<strong>${unworn.length} parça</strong> henüz hiç giyilmedi. Bunları kombine ederek başla.` });
+  }
+  if (cats.üst > 8 && cats.alt < 3) {
+    insights.push({ icon:'⚖️', text:'<strong>Üst–alt dengesizliği var.</strong> Üst giyin fazla, alt giyim az — alt ekle.' });
+  }
+  if (insights.length === 0) {
+    insights.push({ icon:'🌟', text:'<strong>Dolabın oldukça dengeli!</strong> Capsule wardrobe mantığına uygun gidiyorsun.' });
+  }
+  return insights.slice(0, 5);
+}
+
+// RENDER ANALİZ
+function renderAnalysis() {
+  const wrap = document.getElementById('analysisWrap');
+
+  if (clothes.length < 3) {
+    wrap.innerHTML = `
+      <div class="analysis-empty">
+        <div class="analysis-empty-icon">📊</div>
+        <div class="analysis-empty-title">Yeterli veri yok</div>
+        <div class="analysis-empty-sub">Analiz için dolabına en az 3 kıyafet ekle.<br>Daha fazla parça = daha isabetli analiz.</div>
+      </div>`;
+    return;
+  }
+
+  const scores  = calcCapsuleScore(clothes);
+  const unlocks = calcUnlockPieces(clothes);
+  const insights = buildInsights(clothes, scores);
+  const combos  = countCombos(clothes);
+
+  // Score label
+  const label = scores.total >= 80 ? 'Mükemmel' : scores.total >= 60 ? 'İyi' : scores.total >= 40 ? 'Gelişiyor' : 'Başlangıç';
+  const fillClass = scores.total >= 60 ? '' : scores.total >= 40 ? 'warn' : 'danger';
+
+  wrap.innerHTML = `
+    <!-- CAPSULE SKORU -->
+    <div class="score-card">
+      <div class="score-card-header">
+        <div>
+          <div class="score-card-title">Capsule Skoru</div>
+          <div class="score-card-sub">${clothes.length} parça · ${combos} kombin</div>
+        </div>
+      </div>
+
+      <div class="score-circle-wrap">
+        <div class="score-circle">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle class="score-circle-bg" cx="70" cy="70" r="54"/>
+            <circle class="score-circle-fill ${fillClass}" id="scoreFill" cx="70" cy="70" r="54"/>
+          </svg>
+          <div class="score-circle-text">
+            <div class="score-num" id="scoreNum">0</div>
+            <div class="score-denom">/ 100</div>
+            <div class="score-label">${label}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-scores">
+        <div class="sub-score-row">
+          <div class="sub-score-top">
+            <span class="sub-score-name">🎨 Renk Uyumu</span>
+            <span class="sub-score-val">${scores.color}%</span>
+          </div>
+          <div class="sub-score-bar"><div class="sub-score-fill ${scores.color<50?'warn':''}" id="barColor"></div></div>
+        </div>
+        <div class="sub-score-row">
+          <div class="sub-score-top">
+            <span class="sub-score-name">⚖️ Kategori Dengesi</span>
+            <span class="sub-score-val">${scores.diversity}%</span>
+          </div>
+          <div class="sub-score-bar"><div class="sub-score-fill ${scores.diversity<50?'warn':''}" id="barDiv"></div></div>
+        </div>
+        <div class="sub-score-row">
+          <div class="sub-score-top">
+            <span class="sub-score-name">🔀 Kombinasyon Gücü</span>
+            <span class="sub-score-val">${Math.min(100,scores.combos)}%</span>
+          </div>
+          <div class="sub-score-bar"><div class="sub-score-fill ${scores.combos<50?'warn':''}" id="barCombo"></div></div>
+        </div>
+        <div class="sub-score-row">
+          <div class="sub-score-top">
+            <span class="sub-score-name">👁 Kullanım Oranı</span>
+            <span class="sub-score-val">${scores.usage}%</span>
+          </div>
+          <div class="sub-score-bar"><div class="sub-score-fill ${scores.usage<30?'warn':''}" id="barUsage"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="insights-card">
+      <div class="insights-title">🔎 Dolap Yorumları</div>
+      ${insights.map(i => `
+        <div class="insight-item">
+          <div class="insight-icon">${i.icon}</div>
+          <div class="insight-text">${i.text}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- UNLOCK PIECE -->
+    <div class="unlock-card">
+      <div class="unlock-header">
+        <div class="unlock-icon">🔓</div>
+        <div>
+          <div class="unlock-title">Unlock Piece</div>
+          <div class="unlock-sub">Şu parçaları ekle → en çok kombin aç</div>
+        </div>
+      </div>
+      ${unlocks.length ? unlocks.map((u, i) => `
+        <div class="unlock-item">
+          <div class="unlock-rank">${i+1}</div>
+          <div class="unlock-info">
+            <div class="unlock-name">${u.name}</div>
+            <div class="unlock-desc">${u.subcategory} · ${u.color} · Mevcut kombinlerinle uyumlu</div>
+          </div>
+          <div class="unlock-combos">
+            <div class="unlock-combo-num">+${u.gain}</div>
+            <div class="unlock-combo-lbl">kombin</div>
+          </div>
+        </div>
+      `).join('') : `
+        <div style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px;">
+          🎉 Dolabın oldukça tamamlanmış görünüyor!
+        </div>
+      `}
+    </div>
+  `;
+
+  // Animate score circle
+  const circumference = 339.3;
+  const offset = circumference - (scores.total / 100) * circumference;
+  setTimeout(() => {
+    document.getElementById('scoreFill').style.strokeDashoffset = offset;
+    // Count up animation
+    let n = 0;
+    const target = scores.total;
+    const step = () => {
+      n = Math.min(n + 2, target);
+      document.getElementById('scoreNum').textContent = n;
+      if (n < target) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    // Bar animations
+    setTimeout(() => {
+      document.getElementById('barColor').style.width  = scores.color + '%';
+      document.getElementById('barDiv').style.width    = scores.diversity + '%';
+      document.getElementById('barCombo').style.width  = Math.min(100,scores.combos) + '%';
+      document.getElementById('barUsage').style.width  = scores.usage + '%';
+    }, 200);
+  }, 100);
+}
+
+// Wire up refresh button & auto-render when tab opens
+document.getElementById('refreshAnalysis').addEventListener('click', renderAnalysis);
+
+// Override nav to trigger analysis render
+const origNavItems = document.querySelectorAll('.nav-item');
+origNavItems.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.view === 'viewAnalysis') setTimeout(renderAnalysis, 50);
+  });
+});
 
 // PWA
 const m = {name:'Time2Fit',short_name:'Time2Fit',start_url:'.',display:'standalone',background_color:'#e8f5f0',theme_color:'#3db896'};
