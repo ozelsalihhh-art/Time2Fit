@@ -1004,6 +1004,15 @@ html, body {
             </div>
             <div class="settings-row-arrow">›</div>
           </div>
+          <div class="settings-divider"></div>
+          <div class="settings-row" onclick="findAndSaveModel()" style="cursor:pointer">
+            <div class="settings-row-icon">🔍</div>
+            <div class="settings-row-info">
+              <div class="settings-row-title">Çalışan Modeli Bul</div>
+              <div class="settings-row-sub" id="aiModelSettingsSub">Otomatik model testi</div>
+            </div>
+            <button id="findModelBtn" style="background:var(--mint-400);border:none;color:white;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer">Tara</button>
+          </div>
         </div>
 
         <!-- Tehlike Bölgesi -->
@@ -2281,6 +2290,11 @@ function renderSettings() {
       ? `Aktif · ${geminiKey.slice(0,8)}...${geminiKey.slice(-4)}`
       : 'Anahtar girilmemiş';
   }
+  const modelSubEl = document.getElementById('aiModelSettingsSub');
+  if (modelSubEl) {
+    const modelShort = geminiModel ? geminiModel.split('/models/')[1] || geminiModel : null;
+    modelSubEl.textContent = modelShort ? `✓ ${modelShort}` : 'Henüz taranmadı — Tara butonuna bas';
+  }
 }
 
 // Export
@@ -2371,32 +2385,64 @@ async function callGemini(userPrompt) {
 
 ${wardrobeCtx}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`;
   const body = {
-    contents: [{
-      parts: [
-        { text: systemContext + '\n\nKullanıcı: ' + userPrompt }
-      ]
-    }],
+    contents: [{ parts: [{ text: systemContext + '\n\nKullanıcı: ' + userPrompt }] }],
     generationConfig: { temperature: 0.8, maxOutputTokens: 800 }
   };
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    if (res.status === 400) return '⚠️ API anahtarı geçersiz görünüyor. Anahtarın AIza... ile başladığından emin ol.';
-    if (res.status === 429) return '⚠️ Rate limit: Çok fazla istek. 30 saniye bekleyip tekrar dene.';
-    if (res.status === 403) return '⚠️ Bu API anahtarının Gemini erişimi yok. aistudio.google.com\'dan yeni key al.';
-    return `⚠️ Hata (${res.status}): ${err.error?.message || 'Bilinmeyen hata'}`;
+  // Kayıtlı model varsa direkt kullan
+  if (geminiModel) {
+    const res = await fetch(`${geminiModel}:generateContent?key=${geminiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ Yanıt alınamadı.';
+    }
+    // Kayıtlı model artık çalışmıyorsa sıfırla, aşağıdan yeniden tara
+    geminiModel = '';
+    localStorage.removeItem('t2f_gemini_model');
   }
 
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ Yanıt alınamadı.';
+  // Sırayla dene — hangi model/endpoint aktifse o çalışır
+  const urls = [
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=' + geminiKey,
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + geminiKey,
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=' + geminiKey,
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + geminiKey,
+  ];
+
+  let lastMsg = '';
+  for (const url of urls) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (res.status === 404) continue;
+    if (res.status === 400) return '⚠️ API anahtarı geçersiz. Anahtarın AIza... ile başladığından emin ol.';
+    if (res.status === 429) {
+      const err = await res.json().catch(() => ({}));
+      return `⚠️ 429 Hatası: ${err.error?.message || err.error?.status || JSON.stringify(err)}`;
+    }
+    if (res.status === 403) return '⚠️ Bu key\'in Gemini erişimi yok. aistudio.google.com\'dan yeni key al.';
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      lastMsg = err.error?.message || `HTTP ${res.status}`;
+      continue;
+    }
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (text) {
+      // Bulunan modeli kaydet
+      geminiModel = url.split(':generateContent')[0].split('?')[0];
+      localStorage.setItem('t2f_gemini_model', geminiModel);
+      return text;
+    }
+  }
+  return `⚠️ Model bulunamadı. ${lastMsg}`;
 }
 
 function formatAIResponse(text) {
@@ -2561,14 +2607,64 @@ function clearAIHistory() {
   renderAIView();
 }
 
+let geminiModel = localStorage.getItem('t2f_gemini_model') || '';
+
+async function findAndSaveModel() {
+  if (!geminiKey) { showToast('⚠️ Önce API anahtarı gir'); return; }
+
+  const btn = document.getElementById('findModelBtn');
+  if (btn) { btn.textContent = '🔍 Test ediliyor...'; btn.disabled = true; }
+
+  const testBody = {
+    contents: [{ parts: [{ text: 'Merhaba' }] }],
+    generationConfig: { maxOutputTokens: 5 }
+  };
+
+  const candidates = [
+    'gemini-2.0-flash-lite',
+    'gemini-2.0-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-2.5-flash',
+  ];
+
+  const bases = [
+    'https://generativelanguage.googleapis.com/v1beta/models/',
+  ];
+
+  for (const model of candidates) {
+    for (const base of bases) {
+      try {
+        const res = await fetch(`${base}${model}:generateContent?key=${geminiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(testBody)
+        });
+        if (res.ok) {
+          geminiModel = `${base}${model}`;
+          localStorage.setItem('t2f_gemini_model', geminiModel);
+          showToast(`✓ Model bulundu: ${model}`);
+          renderSettings();
+          renderAIView();
+          return;
+        }
+      } catch(e) {}
+    }
+  }
+
+  showToast('⚠️ Çalışan model bulunamadı');
+  if (btn) { btn.textContent = '🔍 Model Bul'; btn.disabled = false; }
+}
+
 document.getElementById('resetAIKeyBtn').addEventListener('click', () => {
   const newKey = prompt(
     'Gemini API Anahtarını Güncelle\n\nYeni anahtarınızı girin:\n(aistudio.google.com/app/apikey)'
   );
   if (newKey && newKey.trim()) {
     geminiKey = newKey.trim();
+    geminiModel = ''; // model'i sıfırla, yeniden bulsun
     localStorage.setItem('t2f_gemini_key', geminiKey);
-    showToast('✓ API anahtarı güncellendi!');
+    localStorage.removeItem('t2f_gemini_model');
+    showToast('✓ Anahtar güncellendi — model testi gerekebilir');
     renderSettings();
   }
 });
