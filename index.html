@@ -993,6 +993,19 @@ html, body {
           </div>
         </div>
 
+        <!-- AI API Anahtarı -->
+        <div class="settings-section-title">AI Asistan</div>
+        <div class="settings-card">
+          <div class="settings-row" id="resetAIKeyBtn">
+            <div class="settings-row-icon">🤖</div>
+            <div class="settings-row-info">
+              <div class="settings-row-title">Gemini API Anahtarını Değiştir</div>
+              <div class="settings-row-sub" id="aiKeySettingsSub">Yükleniyor...</div>
+            </div>
+            <div class="settings-row-arrow">›</div>
+          </div>
+        </div>
+
         <!-- Tehlike Bölgesi -->
         <div class="settings-section-title">Tehlike Bölgesi</div>
         <div class="settings-card">
@@ -2260,6 +2273,14 @@ function renderSettings() {
       ).join('')}
     </div>
   `;
+
+  // AI key status
+  const keySubEl = document.getElementById('aiKeySettingsSub');
+  if (keySubEl) {
+    keySubEl.textContent = geminiKey
+      ? `Aktif · ${geminiKey.slice(0,8)}...${geminiKey.slice(-4)}`
+      : 'Anahtar girilmemiş';
+  }
 }
 
 // Export
@@ -2539,6 +2560,18 @@ function clearAIHistory() {
   aiHistory = [];
   renderAIView();
 }
+
+document.getElementById('resetAIKeyBtn').addEventListener('click', () => {
+  const newKey = prompt(
+    'Gemini API Anahtarını Güncelle\n\nYeni anahtarınızı girin:\n(aistudio.google.com/app/apikey)'
+  );
+  if (newKey && newKey.trim()) {
+    geminiKey = newKey.trim();
+    localStorage.setItem('t2f_gemini_key', geminiKey);
+    showToast('✓ API anahtarı güncellendi!');
+    renderSettings();
+  }
+});
 
 // ── PWA ────────────────────────────────────────────────
 const m = {name:'Time2Fit',short_name:'Time2Fit',start_url:'.',display:'standalone',background_color:'#e8f5f0',theme_color:'#3db896'};
