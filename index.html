@@ -128,7 +128,7 @@ html, body {
 }
 .nav-item.active { color: var(--mint-500); }
 .nav-icon { font-size: 22px; line-height: 1; }
-.nav-label { font-size: 10px; letter-spacing: 0.5px; font-weight: 500; }
+.nav-label { font-size: 9px; letter-spacing: 0.5px; font-weight: 500; }
 
 /* VIEWS */
 .view { display: none; }
@@ -355,6 +355,110 @@ html, body {
   white-space: nowrap; box-shadow: var(--shadow-lg);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── AI ASISTAN ── */
+.ai-wrap { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+.ai-key-banner {
+  background: linear-gradient(135deg, var(--mint-100), var(--clay-100));
+  border: 1px solid var(--mint-200); border-radius: var(--radius-lg);
+  padding: 20px; text-align: center;
+}
+.ai-key-banner-icon { font-size: 32px; margin-bottom: 8px; }
+.ai-key-banner-title { font-family: var(--font-display); font-size: 18px; margin-bottom: 6px; }
+.ai-key-banner-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5; }
+.ai-key-input-row { display: flex; gap: 8px; }
+.ai-key-input { flex: 1; padding: 10px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--surface); color: var(--text-primary); font-family: var(--font-body); font-size: 14px; outline: none; }
+.ai-key-input:focus { border-color: var(--mint-400); }
+.ai-key-save-btn { padding: 10px 18px; border-radius: var(--radius-sm); background: var(--mint-400); border: none; color: white; font-family: var(--font-body); font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+
+.ai-mode-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm);
+}
+.ai-mode-title { font-family: var(--font-display); font-size: 17px; font-weight: 400; margin-bottom: 4px; }
+.ai-mode-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+
+.ai-quick-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.ai-quick-btn {
+  padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--text-secondary);
+  font-family: var(--font-body); font-size: 13px; cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+}
+.ai-quick-btn:active { background: var(--mint-100); border-color: var(--mint-300); color: var(--mint-600); }
+
+.ai-custom-row { display: flex; gap: 8px; }
+.ai-custom-input {
+  flex: 1; padding: 11px 14px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--text-primary); font-family: var(--font-body); font-size: 14px;
+  outline: none; transition: border-color 0.2s;
+}
+.ai-custom-input:focus { border-color: var(--mint-400); }
+.ai-send-btn {
+  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  background: var(--mint-400); border: none; color: white;
+  font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.1s; flex-shrink: 0;
+}
+.ai-send-btn:active { background: var(--mint-500); transform: scale(0.94); }
+.ai-send-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+.ai-result-card {
+  background: var(--surface); border: 1px solid var(--mint-200);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.ai-result-header {
+  background: var(--mint-100); padding: 12px 16px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--mint-200);
+}
+.ai-result-header-icon { font-size: 18px; }
+.ai-result-header-title { font-family: var(--font-display); font-size: 16px; font-weight: 400; color: var(--mint-600); }
+.ai-result-header-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.ai-result-body { padding: 16px; font-size: 14px; line-height: 1.7; color: var(--text-primary); }
+.ai-result-body p { margin-bottom: 10px; }
+.ai-result-body p:last-child { margin-bottom: 0; }
+.ai-result-body strong { color: var(--mint-600); font-weight: 500; }
+.ai-result-body ul { margin: 8px 0 10px 16px; }
+.ai-result-body li { margin-bottom: 5px; }
+
+.ai-loading {
+  display: flex; align-items: center; gap: 10px;
+  padding: 20px; color: var(--text-muted); font-size: 13px;
+}
+.ai-loading-dots { display: flex; gap: 4px; }
+.ai-loading-dots span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--mint-400);
+  animation: aiDot 1.2s ease-in-out infinite;
+}
+.ai-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.ai-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes aiDot { 0%,80%,100%{opacity:.2;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }
+
+.ai-history { display: flex; flex-direction: column; gap: 12px; }
+.ai-history-item { border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden; }
+.ai-history-q { background: var(--surface-2); padding: 10px 14px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+.ai-history-a { padding: 12px 14px; font-size: 13px; line-height: 1.6; color: var(--text-primary); }
+.ai-history-a strong { color: var(--mint-600); font-weight: 500; }
+.ai-history-a ul { margin: 6px 0 8px 16px; }
+.ai-history-a li { margin-bottom: 4px; }
+
+.ai-clear-btn {
+  background: none; border: 1.5px solid var(--border); color: var(--text-muted);
+  font-family: var(--font-body); font-size: 12px; padding: 8px 16px;
+  border-radius: 20px; cursor: pointer; margin: 0 auto; display: block;
+  transition: all 0.15s;
+}
+.ai-clear-btn:active { color: var(--text-secondary); border-color: var(--text-muted); }
+
+.ai-wardrobe-tip {
+  background: var(--surface-2); border-radius: var(--radius-md);
+  padding: 12px 14px; font-size: 12px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border);
+}
 
 /* COMING SOON */
 .coming-card {
@@ -809,6 +913,17 @@ html, body {
       </div>
     </div>
 
+    <!-- AI ASISTAN VIEW -->
+    <div class="view" id="viewAI">
+      <div class="section-header">
+        <span class="section-title">AI Asistan</span>
+        <span class="section-count" id="aiKeyStatus"></span>
+      </div>
+      <div class="ai-wrap" id="aiWrap">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
     <!-- AYARLAR VIEW -->
     <div class="view" id="viewSettings">
       <div class="section-header"><span class="section-title">Ayarlar</span></div>
@@ -903,6 +1018,7 @@ html, body {
     <button class="nav-item" data-view="viewCombo"><span class="nav-icon">🎲</span><span class="nav-label">Kombin</span></button>
     <button class="nav-item" data-view="viewAnalysis"><span class="nav-icon">📊</span><span class="nav-label">Analiz</span></button>
     <button class="nav-item" data-view="viewStyle"><span class="nav-icon">✨</span><span class="nav-label">Stil</span></button>
+    <button class="nav-item" data-view="viewAI"><span class="nav-icon">🤖</span><span class="nav-label">AI</span></button>
     <button class="nav-item" data-view="viewSettings"><span class="nav-icon">⚙️</span><span class="nav-label">Ayarlar</span></button>
   </nav>
 </div>
@@ -1940,6 +2056,9 @@ document.querySelectorAll('.nav-item').forEach(btn => {
   if (btn.dataset.view === 'viewSettings') {
     btn.addEventListener('click', () => setTimeout(renderSettings, 50));
   }
+  if (btn.dataset.view === 'viewAI') {
+    btn.addEventListener('click', () => setTimeout(renderAIView, 50));
+  }
 });
 
 // ── NAV TITLES ────────────────────────────────────────
@@ -1948,6 +2067,7 @@ const NAV_TITLES = {
   viewCombo:    ['Time2Fit', 'Kombin Önerileri'],
   viewAnalysis: ['Time2Fit', 'Capsule & Skorlar'],
   viewStyle:    ['Time2Fit', 'Renk & Öneriler'],
+  viewAI:       ['Time2Fit', 'AI Asistan'],
   viewSettings: ['Time2Fit', 'Ayarlar'],
 };
 
@@ -2190,6 +2310,234 @@ document.getElementById('clearAllBtn').addEventListener('click', () => {
     showToast('🗑️ Tüm veriler silindi');
   }
 });
+
+// ── AI ASISTAN ────────────────────────────────────────
+let geminiKey = localStorage.getItem('t2f_gemini_key') || '';
+let aiHistory = []; // { q, a } geçmiş sorular
+let aiLoading = false;
+
+// İlk açılışta key yoksa sor
+(function checkGeminiKeyOnLoad() {
+  if (!geminiKey) {
+    const key = prompt(
+      'Time2Fit AI Asistan\n\n' +
+      'Gemini API anahtarınızı girin.\n' +
+      '(aistudio.google.com/app/apikey adresinden ücretsiz alabilirsiniz)\n\n' +
+      'İptal ederseniz AI sekmesi çalışmaz, Ayarlar\'dan sonra girebilirsiniz.'
+    );
+    if (key && key.trim()) {
+      geminiKey = key.trim();
+      localStorage.setItem('t2f_gemini_key', geminiKey);
+    }
+  }
+})();
+
+function buildWardrobeContext() {
+  if (!clothes.length) return 'Dolap boş.';
+  const summary = clothes.map(c =>
+    `- ${c.name} (${c.subcategory || c.category}, ${c.color || 'renk yok'}, ${c.formality || 'casual'}, ${c.season || '4 Mevsim'})`
+  ).join('\n');
+  const totalCombos = countCombos(clothes);
+  return `Dolap içeriği (${clothes.length} parça, ${totalCombos} potansiyel kombin):\n${summary}`;
+}
+
+async function callGemini(userPrompt) {
+  if (!geminiKey) {
+    return 'API anahtarı girilmemiş. Lütfen sayfayı yenileyin veya aşağıdaki alana anahtarınızı girin.';
+  }
+  const wardrobeCtx = buildWardrobeContext();
+  const systemContext = `Sen Time2Fit uygulamasının AI stil asistanısın. Kullanıcının gerçek dolap verilerine bakarak kişiselleştirilmiş kombin ve stil önerileri sunuyorsun. Türkçe yanıt ver. Kısa, pratik ve samimi ol. Eğer kombin öneriyorsan mutlaka dolaptaki gerçek parça isimlerini kullan. Markdown kullanabilirsin (**kalın**, - liste).
+
+${wardrobeCtx}`;
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`;
+  const body = {
+    contents: [{
+      parts: [
+        { text: systemContext + '\n\nKullanıcı: ' + userPrompt }
+      ]
+    }],
+    generationConfig: { temperature: 0.8, maxOutputTokens: 800 }
+  };
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 400) return '⚠️ API anahtarı geçersiz görünüyor. Ayarlardan anahtarı kontrol edin.';
+    if (res.status === 429) return '⚠️ Çok fazla istek gönderildi. Birkaç saniye bekleyip tekrar deneyin.';
+    return `⚠️ Hata (${res.status}): ${err.error?.message || 'Bilinmeyen hata'}`;
+  }
+
+  const data = await res.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ Yanıt alınamadı.';
+}
+
+function formatAIResponse(text) {
+  // Markdown → HTML basit dönüşüm
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, m => '<ul>' + m + '</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^(.+)$/, '<p>$1</p>');
+}
+
+async function askAI(prompt, labelForHistory) {
+  if (aiLoading) return;
+  if (!geminiKey) {
+    renderAIView();
+    return;
+  }
+  if (!clothes.length) {
+    showToast('⚠️ Önce dolabına kıyafet ekle!');
+    return;
+  }
+
+  aiLoading = true;
+  renderAIView();
+
+  const answer = await callGemini(prompt);
+  aiLoading = false;
+  aiHistory.unshift({ q: labelForHistory || prompt, a: answer });
+  if (aiHistory.length > 10) aiHistory.pop();
+  renderAIView();
+}
+
+const AI_QUICK_ACTIONS = [
+  { icon: '🎲', label: 'Bugünkü kombin', prompt: 'Dolabımdan bugün için en iyi kombin öner. Parçaların isimlerini belirt ve neden uyumlu olduklarını kısaca açıkla.' },
+  { icon: '📅', label: 'Haftalık plan', prompt: 'Dolabımdaki parçaları kullanarak 7 günlük kombin planı yap. Her gün için farklı bir kombin öner, Pazartesi\'den Pazar\'a listele.' },
+  { icon: '📊', label: 'Dolap analizi', prompt: 'Dolabımı analiz et. Güçlü ve zayıf yönlerini söyle, en çok hangi tür kombinler çıkıyor, ne eksik?' },
+  { icon: '🛍️', label: 'Ne almalıyım?', prompt: 'Dolabıma bakarak en çok hangi parçanın eksik olduğunu söyle. En fazla kombin açacak 1-2 parça öner.' },
+  { icon: '🏢', label: 'Ofis kombinleri', prompt: 'Dolabımdan iş/ofis ortamı için uygun 3 farklı smart casual kombin öner. Parça isimlerini kullan.' },
+  { icon: '😎', label: 'Hafta sonu stili', prompt: 'Dolabımdan hafta sonu için rahat ama şık 3 farklı günlük kombin öner.' },
+];
+
+function renderAIView() {
+  const wrap = document.getElementById('aiWrap');
+  if (!wrap) return;
+
+  // Anahtar yok
+  if (!geminiKey) {
+    wrap.innerHTML = `
+      <div class="ai-key-banner">
+        <div class="ai-key-banner-icon">🤖</div>
+        <div class="ai-key-banner-title">Gemini API Anahtarı Gerekli</div>
+        <div class="ai-key-banner-sub">
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--mint-500)">aistudio.google.com</a>
+          adresinden ücretsiz anahtar alabilirsin.
+        </div>
+        <div class="ai-key-input-row">
+          <input class="ai-key-input" id="aiKeyInput" type="password" placeholder="AIza... anahtarınızı yapıştırın">
+          <button class="ai-key-save-btn" onclick="saveGeminiKey()">Kaydet</button>
+        </div>
+      </div>`;
+    document.getElementById('aiKeyStatus').textContent = '';
+    return;
+  }
+
+  // Dolap boş uyarısı
+  const emptyWardrobeTip = clothes.length === 0 ? `
+    <div class="ai-wardrobe-tip">
+      👔 Dolabın boş — AI önerileri için önce Dolap sekmesinden kıyafet ekle.
+    </div>` : `
+    <div class="ai-wardrobe-tip">
+      👔 ${clothes.length} parça dolabında · AI bunları biliyor
+    </div>`;
+
+  // Loading durumu
+  const loadingHTML = aiLoading ? `
+    <div class="ai-result-card">
+      <div class="ai-loading">
+        <div class="ai-loading-dots"><span></span><span></span><span></span></div>
+        <span>AI dolabına bakıyor...</span>
+      </div>
+    </div>` : '';
+
+  // Geçmiş
+  const historyHTML = aiHistory.length && !aiLoading ? `
+    <div class="ai-history">
+      ${aiHistory.map((h, i) => `
+        <div class="${i === 0 ? 'ai-result-card' : 'ai-history-item'}">
+          ${i === 0 ? `
+            <div class="ai-result-header">
+              <div class="ai-result-header-icon">✨</div>
+              <div>
+                <div class="ai-result-header-title">AI Yanıtı</div>
+                <div class="ai-result-header-sub">${h.q}</div>
+              </div>
+            </div>
+            <div class="ai-result-body">${formatAIResponse(h.a)}</div>
+          ` : `
+            <div class="ai-history-q">💬 ${h.q}</div>
+            <div class="ai-history-a">${formatAIResponse(h.a)}</div>
+          `}
+        </div>
+      `).join('')}
+    </div>
+    <button class="ai-clear-btn" onclick="clearAIHistory()">Geçmişi temizle</button>
+  ` : '';
+
+  wrap.innerHTML = `
+    ${emptyWardrobeTip}
+
+    <div class="ai-mode-card">
+      <div class="ai-mode-title">Kombin & Analiz</div>
+      <div class="ai-mode-sub">Hızlı öneri seç veya kendi sorunuzu yazın</div>
+      <div class="ai-quick-btns">
+        ${AI_QUICK_ACTIONS.map((a, i) => `
+          <button class="ai-quick-btn" onclick="askAI(${JSON.stringify(a.prompt)}, ${JSON.stringify(a.icon + ' ' + a.label)})">
+            ${a.icon} ${a.label}
+          </button>
+        `).join('')}
+      </div>
+      <div class="ai-custom-row">
+        <input class="ai-custom-input" id="aiCustomInput" type="text"
+          placeholder="Sormak istediğin bir şey var mı?" 
+          onkeydown="if(event.key==='Enter')sendCustomAI()">
+        <button class="ai-send-btn" id="aiSendBtn" onclick="sendCustomAI()" ${aiLoading ? 'disabled' : ''}>↑</button>
+      </div>
+    </div>
+
+    ${loadingHTML}
+    ${historyHTML}
+  `;
+
+  document.getElementById('aiKeyStatus').textContent = '● Bağlı';
+  document.getElementById('aiKeyStatus').style.color = 'var(--mint-500)';
+  document.getElementById('aiKeyStatus').style.fontSize = '11px';
+}
+
+function sendCustomAI() {
+  const input = document.getElementById('aiCustomInput');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  input.value = '';
+  askAI(val, '💬 ' + val);
+}
+
+function saveGeminiKey() {
+  const input = document.getElementById('aiKeyInput');
+  if (!input) return;
+  const key = input.value.trim();
+  if (!key) { showToast('⚠️ Anahtar boş olamaz'); return; }
+  geminiKey = key;
+  localStorage.setItem('t2f_gemini_key', geminiKey);
+  showToast('✓ API anahtarı kaydedildi!');
+  renderAIView();
+}
+
+function clearAIHistory() {
+  aiHistory = [];
+  renderAIView();
+}
 
 // ── PWA ────────────────────────────────────────────────
 const m = {name:'Time2Fit',short_name:'Time2Fit',start_url:'.',display:'standalone',background_color:'#e8f5f0',theme_color:'#3db896'};
