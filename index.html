@@ -356,6 +356,26 @@ html, body {
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
+.combo-pinterest-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+.combo-pinterest-prompt {
+  flex: 1; font-size: 11px; color: var(--text-muted);
+  font-family: var(--font-body); line-height: 1.4;
+  letter-spacing: 0.1px;
+}
+.combo-search-btn {
+  flex-shrink: 0; width: 32px; height: 32px;
+  border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--surface-2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; text-decoration: none;
+  transition: all 0.15s;
+}
+.combo-search-btn:active { background: var(--mint-100); border-color: var(--mint-300); transform: scale(0.9); }
+
 /* ── AI ASISTAN ── */
 .ai-wrap { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 16px; }
 
@@ -1113,7 +1133,6 @@ html, body {
           <select class="form-select" id="inputFormality">
             <option value="casual">Günlük</option>
             <option value="smart">Smart Casual</option>
-            <option value="formal">Formal</option>
             <option value="sport">Spor</option>
           </select>
         </div>
@@ -2106,53 +2125,81 @@ function generateCombos(wardrobe, count = 6) {
 
   const combos = [];
 
-  // Generate all valid combinations
+  // ── GÜNLÜK kombinler: ceket YOK, sadece üst+alt+ayakkabı ──
   for (const t of tops) {
     for (const b of bottoms) {
       for (const s of shoes) {
+        // Spor veya günlük parçalar
         const items = [t, b, s];
+        const formalitySet = new Set(items.map(i => i.formality).filter(Boolean));
+        if (formalitySet.has('formal')) continue;
+        if (formalitySet.has('smart') && formalitySet.size === 3) continue; // tüm parçalar smart ise smart combo
+
         const scores = getColorScores(items);
         if (scores.avg < 5) continue;
 
-        // Formality check — don't mix sport+formal
-        const formalitySet = new Set(items.map(i => i.formality).filter(Boolean));
-        if (formalitySet.has('formal') && formalitySet.has('sport')) continue;
-        if (formalitySet.has('casual') && formalitySet.has('formal')) continue;
-
-        // Determine outfit type
-        const hasSmart = items.some(i => i.formality === 'smart' || i.formality === 'formal');
-        const outfitType = hasSmart ? 'smart' : 'casual';
-
-        combos.push({ items, score: scores.avg, type: outfitType, hasOuter: false });
+        combos.push({ items, score: scores.avg, type: 'casual', hasOuter: false });
       }
     }
   }
 
-  // Add some with outerwear
+  // ── SMART CASUAL kombinler: ceket ZORUNLU ──
   if (outers.length) {
-    for (const o of outers.slice(0, 2)) {
-      for (const t of tops.slice(0, 3)) {
-        for (const b of bottoms.slice(0, 3)) {
-          for (const s of shoes.slice(0, 2)) {
+    // Smart casual için uygun dış giyimler (blazer, ceket — sport mont değil)
+    const smartOuters = outers.filter(o => {
+      const sub = (o.subcategory || '').toLowerCase();
+      const formality = o.formality || 'smart';
+      // Spor parkaları/montları hariç tut
+      if (formality === 'sport') return false;
+      return true;
+    });
+
+    for (const o of smartOuters) {
+      for (const t of tops) {
+        if (t.formality === 'sport') continue; // spor tişört smart ile gitmez
+        for (const b of bottoms) {
+          if (b.formality === 'sport') continue;
+          for (const s of shoes) {
+            if (s.formality === 'sport') continue;
             const items = [o, t, b, s];
             const scores = getColorScores(items);
-            if (scores.avg < 5.5) continue;
-            combos.push({ items, score: scores.avg, type: 'smart', hasOuter: true });
+            if (scores.avg < 4.5) continue;
+
+            combos.push({ items, score: scores.avg + 0.5, type: 'smart', hasOuter: true });
           }
         }
       }
     }
   }
 
-  // Sort by score, shuffle top results for variety
+  // Skora göre sırala
   combos.sort((a, b) => b.score - a.score);
-  const top = combos.slice(0, Math.min(combos.length, count * 3));
-  // Shuffle for variety
-  for (let i = top.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [top[i], top[j]] = [top[j], top[i]];
+
+  // Filtre uygulanmışsa (sadece casual veya sadece smart) direkt döndür
+  const smartCombos  = combos.filter(c => c.type === 'smart');
+  const casualCombos = combos.filter(c => c.type === 'casual');
+
+  // "Tümü" modunda dengeli karıştır
+  if (smartCombos.length && casualCombos.length) {
+    const smartCount  = Math.ceil(count / 2);
+    const casualCount = count - smartCount;
+    const mixed = [
+      ...shuffle(smartCombos).slice(0, smartCount),
+      ...shuffle(casualCombos).slice(0, casualCount),
+    ];
+    return shuffle(mixed).slice(0, count);
   }
-  return top.slice(0, count);
+
+  return shuffle(combos).slice(0, count);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 function renderComboView() {
@@ -2168,10 +2215,23 @@ function renderComboView() {
     return;
   }
 
-  const filtered = comboFilter === 'all' ? clothes : clothes.filter(c => c.formality === comboFilter || !c.formality);
-  const combos = generateCombos(filtered, 5);
+  // Filtreye göre dolabı veya combo tipini ayır
+  let filteredWardrobe = clothes;
+  if (comboFilter === 'smart') {
+    // Smart casual: tüm dolabı ver ama generateCombos içinde sadece smart üretilecek
+    // Spor parçaları hariç tut
+    filteredWardrobe = clothes.filter(c => c.formality !== 'sport');
+  } else if (comboFilter === 'casual') {
+    filteredWardrobe = clothes.filter(c => c.formality !== 'formal');
+  }
+  const combos = generateCombos(filteredWardrobe, 6);
+  const filteredCombos = comboFilter === 'all' ? combos :
+    combos.filter(c => c.type === comboFilter);
 
-  if (!combos.length) {
+  if (!filteredCombos.length) {
+    const emptyMsg = comboFilter === 'smart'
+      ? 'Smart Casual kombinler için dolabına ceket/blazer ekle.'
+      : 'Bu filtre için uyumlu parça kombinasyonu yok.';
     wrap.innerHTML = `
       <div class="combo-filter-wrap">
         ${renderComboFilters()}
@@ -2179,25 +2239,35 @@ function renderComboView() {
       <div class="combo-empty">
         <div class="combo-empty-icon">🤔</div>
         <div class="combo-empty-title">Kombin bulunamadı</div>
-        <div class="combo-empty-sub">Bu filtre için uyumlu parça kombinasyonu yok.<br>Farklı bir filtre dene.</div>
+        <div class="combo-empty-sub">${emptyMsg}</div>
       </div>`;
     attachComboFilters();
     return;
   }
 
   const outfitLabels = ['Bugünün Kombini', 'Alternatif Kombin', 'Hafta Sonu Seçimi', 'Ofis Kombinasyonu', 'Akşam Seçeneği'];
-  const typeLabels = { smart: '🏢 Smart Casual', casual: '😎 Günlük', formal: '👔 Formal' };
+  const typeLabels = { smart: '🏢 Smart Casual', casual: '😎 Günlük', formal: '🏢 Smart Casual' };
 
   wrap.innerHTML = `
     <div class="combo-filter-wrap">
       ${renderComboFilters()}
     </div>
-    ${combos.map((combo, i) => {
+    ${filteredCombos.map((combo, i) => {
       const harmonyPct = Math.round(combo.score * 10);
       const harmonyLabel = harmonyPct >= 85 ? 'Mükemmel uyum' : harmonyPct >= 70 ? 'İyi uyum' : 'Yeterli uyum';
       const roles = combo.hasOuter
         ? ['Dış Giyim', 'Üst Giyim', 'Alt Giyim', 'Ayakkabı']
         : ['Üst Giyim', 'Alt Giyim', 'Ayakkabı'];
+
+      // Pinterest prompt üret
+      const colorMap = { 'Beyaz':'white','Krem':'cream','Bej':'beige','Haki':'khaki','Yeşil':'green','Mavi':'blue','Navy':'navy','Siyah':'black','Gri':'grey','Bordo':'burgundy','Turuncu':'orange','Sarı':'yellow','Pembe':'pink','Kahve':'brown','Taş':'stone','Lacivert':'navy blue' };
+      const subMap = { 'Gömlek':'shirt','T-Shirt':'t-shirt','Polo':'polo shirt','Kazak':'sweater','Triko':'knit sweater','Sweatshirt':'sweatshirt','Yelek':'vest','Pantolon':'trousers','Chino':'chino pants','Jean':'jeans','Şort':'shorts','Eşofman':'sweatpants','Ceket':'blazer jacket','Blazer':'blazer','Trençkot':'trench coat','Mont':'coat','Yağmurluk':'raincoat','Sneaker':'sneakers','Loafer':'loafers','Oxford':'oxford shoes','Bot':'boots','Sandalet':'sandals','Terlik':'slides' };
+      const typePrompt = combo.type === 'smart' ? 'smart casual men outfit' : 'casual men outfit';
+      const pinterestPrompt = combo.items.map(item => {
+        const color = colorMap[item.color] || item.color || '';
+        const sub = subMap[item.subcategory] || item.subcategory || '';
+        return [color, sub].filter(Boolean).join(' ');
+      }).filter(Boolean).join(' ') + ' ' + typePrompt;
 
       return `
         <div class="combo-outfit-card">
@@ -2226,6 +2296,11 @@ function renderComboView() {
             }).join('')}
             <span class="combo-harmony-label">%${harmonyPct} · ${harmonyLabel}</span>
           </div>
+          <div class="combo-pinterest-row">
+            <div class="combo-pinterest-prompt">${pinterestPrompt}</div>
+            <a class="combo-search-btn" href="https://pinterest.com/search/pins/?q=${encodeURIComponent(pinterestPrompt)}" target="_blank" title="Pinterest'te Ara">📌</a>
+            <a class="combo-search-btn" href="https://www.google.com/search?q=${encodeURIComponent(pinterestPrompt)}&tbm=isch" target="_blank" title="Google'da Ara">🔍</a>
+          </div>
         </div>
       `;
     }).join('')}
@@ -2235,11 +2310,31 @@ function renderComboView() {
 
 function renderComboFilters() {
   return [
-    { val: 'all', label: 'Tümü' },
+    { val: 'all',    label: 'Tümü' },
     { val: 'casual', label: '😎 Günlük' },
-    { val: 'smart', label: '🏢 Smart' },
-    { val: 'formal', label: '👔 Formal' },
+    { val: 'smart',  label: '🏢 Smart Casual' },
   ].map(f => `<button class="combo-filter-btn${comboFilter === f.val ? ' active' : ''}" data-filter="${f.val}">${f.label}</button>`).join('');
+}
+
+function copyPinterest(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.querySelector('.copy-icon').textContent = '✓';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.querySelector('.copy-icon').textContent = '📋';
+    }, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.querySelector('.copy-icon').textContent = '✓';
+    setTimeout(() => { btn.querySelector('.copy-icon').textContent = '📋'; }, 2000);
+  });
 }
 
 function attachComboFilters() {
