@@ -2125,18 +2125,17 @@ function generateCombos(wardrobe, count = 6) {
 
   const combos = [];
 
-  // ── GÜNLÜK kombinler: ceket YOK, sadece üst+alt+ayakkabı ──
-  for (const t of tops) {
-    for (const b of bottoms) {
-      for (const s of shoes) {
+  // ── GÜNLÜK kombinler: ceket YOK, sadece casual/sport parçalar ──
+  const casualTops    = tops.filter(t => t.formality !== 'smart' && t.formality !== 'formal');
+  const casualBottoms = bottoms.filter(b => b.formality !== 'smart' && b.formality !== 'formal');
+  const casualShoes   = shoes.filter(s => s.formality !== 'smart' && s.formality !== 'formal');
+
+  for (const t of casualTops) {
+    for (const b of casualBottoms) {
+      for (const s of casualShoes) {
         const items = [t, b, s];
-
-        // Günlük kombinde smart veya formal parça olmasın
-        if (items.some(i => i.formality === 'smart' || i.formality === 'formal')) continue;
-
         const scores = getColorScores(items);
         if (scores.avg < 5) continue;
-
         combos.push({ items, score: scores.avg, type: 'casual', hasOuter: false });
       }
     }
@@ -2214,14 +2213,13 @@ function renderComboView() {
     return;
   }
 
-  // Filtreye göre dolabı veya combo tipini ayır
+  // Filtreye göre dolabı ayır
   let filteredWardrobe = clothes;
   if (comboFilter === 'smart') {
-    // Smart casual: tüm dolabı ver ama generateCombos içinde sadece smart üretilecek
-    // Spor parçaları hariç tut
     filteredWardrobe = clothes.filter(c => c.formality !== 'sport');
   } else if (comboFilter === 'casual') {
-    filteredWardrobe = clothes.filter(c => c.formality !== 'formal');
+    // Casual filtresinde smart ve formal parçaları dolaba hiç sokma
+    filteredWardrobe = clothes.filter(c => c.formality !== 'smart' && c.formality !== 'formal');
   }
   const combos = generateCombos(filteredWardrobe, 6);
   const filteredCombos = comboFilter === 'all' ? combos :
