@@ -2129,11 +2129,10 @@ function generateCombos(wardrobe, count = 6) {
   for (const t of tops) {
     for (const b of bottoms) {
       for (const s of shoes) {
-        // Spor veya günlük parçalar
         const items = [t, b, s];
-        const formalitySet = new Set(items.map(i => i.formality).filter(Boolean));
-        if (formalitySet.has('formal')) continue;
-        if (formalitySet.has('smart') && formalitySet.size === 3) continue; // tüm parçalar smart ise smart combo
+
+        // Günlük kombinde smart veya formal parça olmasın
+        if (items.some(i => i.formality === 'smart' || i.formality === 'formal')) continue;
 
         const scores = getColorScores(items);
         if (scores.avg < 5) continue;
@@ -2156,7 +2155,7 @@ function generateCombos(wardrobe, count = 6) {
 
     for (const o of smartOuters) {
       for (const t of tops) {
-        if (t.formality === 'sport') continue; // spor tişört smart ile gitmez
+        if (t.formality === 'sport') continue;
         for (const b of bottoms) {
           if (b.formality === 'sport') continue;
           for (const s of shoes) {
