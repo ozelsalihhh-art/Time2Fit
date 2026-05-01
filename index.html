@@ -2350,7 +2350,7 @@ async function callGemini(userPrompt) {
 
 ${wardrobeCtx}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`;
   const body = {
     contents: [{
       parts: [
@@ -2368,8 +2368,9 @@ ${wardrobeCtx}`;
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    if (res.status === 400) return '⚠️ API anahtarı geçersiz görünüyor. Ayarlardan anahtarı kontrol edin.';
-    if (res.status === 429) return '⚠️ Çok fazla istek gönderildi. Birkaç saniye bekleyip tekrar deneyin.';
+    if (res.status === 400) return '⚠️ API anahtarı geçersiz görünüyor. Anahtarın AIza... ile başladığından emin ol.';
+    if (res.status === 429) return '⚠️ Rate limit: Çok fazla istek. 30 saniye bekleyip tekrar dene.';
+    if (res.status === 403) return '⚠️ Bu API anahtarının Gemini erişimi yok. aistudio.google.com\'dan yeni key al.';
     return `⚠️ Hata (${res.status}): ${err.error?.message || 'Bilinmeyen hata'}`;
   }
 
